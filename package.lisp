@@ -17,5 +17,6 @@
     #:defvec
     #:hash-accessor
     #:map-key
+    #:lets
   )
 )

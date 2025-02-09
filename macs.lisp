@@ -27,3 +27,10 @@
 (defmacro macfun (macro &rest params)
   `(lambda ,params (,macro ,@params))
 )
+
+(defmacro lets (bindings &rest exprs)
+  (if (evenp (length bindings))
+    `(let* ,(loop for (a b) on bindings by #'cddr collect (list a b)) ,@exprs)
+    `(error (format nil "Number of forms for lets macro bindings must be even : ~%~A" ,bindings))
+  )
+)

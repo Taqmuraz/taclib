@@ -21,5 +21,6 @@
     #:last->
     #:macfun
     #:lets
+    #:conds
   )
 )

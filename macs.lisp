@@ -34,3 +34,10 @@
     `(error (format nil "Number of forms for lets macro bindings must be even : ~%~A" ,bindings))
   )
 )
+
+(defmacro conds (&rest forms)
+  (if (evenp (length forms))
+    `(cond ,@(loop for (a b) on forms by #'cddr collect (list a b)))
+    `(error (format nil "Number of forms for conds macro must be even : ~%~A") ,forms)
+  )
+)

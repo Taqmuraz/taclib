@@ -17,6 +17,9 @@
     #:defvec
     #:hash-accessor
     #:map-key
+    #:->
+    #:last->
+    #:macfun
     #:lets
   )
 )

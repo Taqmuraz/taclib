@@ -14,7 +14,7 @@
   )
 )
 
-(def-> 1-> (acc e)
+(def-> -> (acc e)
   (apply #'list (first e) acc (rest e))
   (list e acc)
 )

@@ -22,5 +22,6 @@
     #:macfun
     #:lets
     #:conds
+    #:cases
   )
 )

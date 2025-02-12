@@ -23,5 +23,14 @@
     #:lets
     #:conds
     #:cases
+    #:vdot
+    #:ldot
+    #:mat-identity
+    #:transponed
+    #:mul-mat
+    #:mul-mats
+    #:mmul-mat
+    #:v+ #:v- #:v* #:v/
+    #:l+ #:l- #:l* #:l/
   )
 )

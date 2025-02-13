@@ -39,7 +39,7 @@
 (defun mat-identity (n)
   (loop for i from 0 below n
     with r = (make-array n)
-    and c = (make-array n)
+    and c = (make-array n :initial-element 0)
     do (setf (aref r i) (with-vals c i 1))
     finally (return r)
   )

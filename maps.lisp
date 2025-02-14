@@ -130,6 +130,10 @@
   (lambda (table) (declare (type hash-table table)) (gethash key table))
 )
 
+(defun assoc-accessor (key)
+  (lambda (map) (let ((a (assoc key map))) (if a (cdr a) nil)))
+)
+
 (defgeneric map-key (map key &optional not-found))
 
 (defmethod map-key ((map hash-table) key &optional not-found)

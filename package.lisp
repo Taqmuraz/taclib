@@ -17,6 +17,7 @@
     #:update
     #:defvec
     #:hash-accessor
+    #:assoc-accessor
     #:map-key
     #:->
     #:last->
@@ -33,5 +34,7 @@
     #:mmul-mat
     #:v+ #:v- #:v* #:v/
     #:l+ #:l- #:l* #:l/
+    #:part
+    #:mpart
   )
 )

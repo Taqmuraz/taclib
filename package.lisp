@@ -7,6 +7,7 @@
     #:with-vals
     #:hash->str
     #:make-hash
+    #:hash
     #:merge-hash
     #:copy-hash
     #:hash-keys

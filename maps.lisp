@@ -36,6 +36,10 @@
   )
 )
 
+(defmacro hash (&rest kvs)
+  `(make-hash ,@kvs)
+)
+
 (defun merge-hash (&rest hs)
   (let ((r (make-hash-table)))
     (dolist (h hs) (forhash (k v) h (setf (gethash k r) v)))
@@ -133,5 +137,7 @@
 )
 
 (defmethod print-object ((h hash-table) stream)
-  (format stream "~A" (hash->assoc h))
+  (format stream "(taclib:hash")
+  (forhash (k v) h (format stream " ~A ~A" k v))
+  (format stream ")")
 )

@@ -131,3 +131,7 @@
 (defmethod map-key ((map vector) key &optional not-found)
   (let ((l (length map))) (if (and (>= l 0) (< key l)) (aref map key) not-found))
 )
+
+(defmethod print-object ((h hash-table) stream)
+  (format stream "~A" (hash->assoc h))
+)

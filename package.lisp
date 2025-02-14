@@ -5,8 +5,8 @@
   (:export
     #:forhash
     #:with-vals
-    #:hash->str
     #:make-hash
+    #:make-assoc
     #:hash
     #:merge-hash
     #:copy-hash

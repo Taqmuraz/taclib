@@ -21,19 +21,15 @@
   )
 )
 
-(defun hash->str (h)
-  (with-output-to-string (r)
-    (format r "{")
-    (forhash (k v) h (format r " ~A ~A" k v))
-    (format r " }")
-  )
-)
-
 (defun make-hash (&rest kvs)
   (let ((r (make-hash-table)))
     (loop for (k v) on kvs by #'cddr do (setf (gethash k r) v))
     r
   )
+)
+
+(defun make-assoc (&rest kvs)
+  (loop for (k v) on kvs by #'cddr collect (cons k v))
 )
 
 (defmacro hash (&rest kvs)
@@ -137,7 +133,5 @@
 )
 
 (defmethod print-object ((h hash-table) stream)
-  (format stream "(taclib:hash")
-  (forhash (k v) h (format stream " ~A ~A" k v))
-  (format stream ")")
+  (format stream "#<HASH-TABLE ~A>" (prin1-to-string (hash-keys h)))
 )

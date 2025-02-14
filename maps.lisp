@@ -21,6 +21,14 @@
   )
 )
 
+(defmethod with-vals ((c list) &rest kvs)
+  (let ((r (make-hash-table)))
+    (loop for (k . v) in c do (setf (gethash k r) v))
+    (loop for (k v) on kvs by #'cddr do (setf (gethash k r) v))
+    (hash->assoc r)
+  )
+)
+
 (defun make-hash (&rest kvs)
   (let ((r (make-hash-table)))
     (loop for (k v) on kvs by #'cddr do (setf (gethash k r) v))
@@ -29,7 +37,7 @@
 )
 
 (defun make-assoc (&rest kvs)
-  (loop for (k v) on kvs by #'cddr collect (cons k v))
+  (hash->assoc (apply #'make-hash kvs))
 )
 
 (defmacro hash (&rest kvs)
@@ -130,6 +138,10 @@
 
 (defmethod map-key ((map vector) key &optional not-found)
   (let ((l (length map))) (if (and (>= l 0) (< key l)) (aref map key) not-found))
+)
+
+(defmethod map-key ((map list) key &optional not-found)
+  (let ((a (assoc key map))) (if a (cdr a) not-found))
 )
 
 (defmethod print-object ((h hash-table) stream)

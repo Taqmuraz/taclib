@@ -48,3 +48,15 @@
     `(error (format nil "Number of forms for cases macro must be even : ~%~A") ,forms)
   )
 )
+
+(defmacro with-map-keys (keys map &body forms)
+  (lets (
+      m (gensym)
+      ks (loop for k in keys
+        collect (if (listp k) k (list k (intern (symbol-name k) "KEYWORD")))
+      )
+    )
+    `(let* ((,m ,map) ,@(loop for (p k) in ks
+      collect (list p (list 'map-key m k)))) ,@forms)
+  )
+)

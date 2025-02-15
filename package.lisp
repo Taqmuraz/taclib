@@ -25,6 +25,7 @@
     #:lets
     #:conds
     #:cases
+    #:with-map-keys
     #:vdot
     #:ldot
     #:mat-identity

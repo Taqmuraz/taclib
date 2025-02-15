@@ -38,5 +38,7 @@
     #:l+ #:l- #:l* #:l/
     #:part
     #:mpart
+    #:comp
+    #:mcomp
   )
 )

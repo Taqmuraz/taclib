@@ -19,6 +19,7 @@
     #:hash-accessor
     #:assoc-accessor
     #:map-key
+    #:select-keys
     #:->
     #:last->
     #:macfun

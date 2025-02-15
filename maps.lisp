@@ -151,3 +151,17 @@
 (defmethod print-object ((h hash-table) stream)
   (format stream "#<HASH-TABLE ~A>" (prin1-to-string (hash-keys h)))
 )
+
+(defgeneric select-keys (map &rest keys))
+
+(defmethod select-keys ((map list) &rest keys)
+  (apply #'make-assoc (loop for k in keys append (list k (map-key map k))))
+)
+
+(defmethod select-keys ((map vector) &rest keys)
+  (map 'vector (mpart map-key map) keys)
+)
+
+(defmethod select-keys ((map hash-table) &rest keys)
+  (apply #'make-hash (loop for k in keys append (list k (map-key map k))))
+)

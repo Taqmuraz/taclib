@@ -15,5 +15,6 @@
     (:file "seqs")
     (:file "syms")
     (:file "vecs")
+    (:file "io")
   )
 )

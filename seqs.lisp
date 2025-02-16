@@ -29,3 +29,10 @@
   )
 )
 
+(defgeneric connect (sep seq))
+
+(defmethod connect (sep (seq list))
+  (when seq
+    (cons (first seq) (loop for e in (rest seq) append (list sep e)))
+  )
+)

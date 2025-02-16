@@ -40,5 +40,8 @@
     #:mpart
     #:comp
     #:mcomp
+    #:file-parent
+    #:concat-path
+    #:connect
   )
 )

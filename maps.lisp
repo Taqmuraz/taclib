@@ -107,6 +107,10 @@
   )
 )
 
+(defmethod update ((map list) func &rest keys)
+  (hash->assoc (apply #'update (assoc->hash map) func keys))
+)
+
 (defmacro defvec (name &rest fields)
   (let (
       (len (length fields))

@@ -130,3 +130,21 @@
 (defun transform-point-4x4 (m p)
   (aref (mmul-mat m (vector (aref p 0) (aref p 1) (aref p 2) 1) 4 4 4 1) 0)
 )
+
+(defun vec-16->mat-4x4 (v)
+  (vector
+    (subseq v 0 4)
+    (subseq v 4 8)
+    (subseq v 8 12)
+    (subseq v 12 16)
+  )
+)
+
+(defun mat-4x4->vec-16 (m)
+  (concatenate 'vector
+    (aref m 0)
+    (aref m 1)
+    (aref m 2)
+    (aref m 3)
+  )
+)

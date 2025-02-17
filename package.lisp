@@ -36,6 +36,8 @@
     #:transform-point-4x4
     #:mul-mats
     #:mmul-mat
+    #:vec-16->mat-4x4
+    #:mat-4x4->vec-16
     #:v+ #:v- #:v* #:v/
     #:l+ #:l- #:l* #:l/
     #:part

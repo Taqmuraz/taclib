@@ -32,6 +32,8 @@
     #:mat-identity
     #:transponed
     #:mul-mat
+    #:mul-mat-4x4
+    #:transform-point-4x4
     #:mul-mats
     #:mmul-mat
     #:v+ #:v- #:v* #:v/

@@ -1,12 +1,13 @@
 (in-package #:taclib)
 
-(defmacro def-> (name params list-case non-list-case)
+(defmacro def-> (name params list-case keyword-case non-list-case)
   `(defmacro ,name (&body exprs)
     (reduce
       (lambda ,params
-        (if (listp ,(second params))
-          ,list-case
-          ,non-list-case
+        (typecase ,(second params)
+          (list ,list-case)
+          (keyword ,keyword-case)
+          (t ,non-list-case)
         )
       )
       exprs
@@ -16,11 +17,13 @@
 
 (def-> -> (acc e)
   (apply #'list (first e) acc (rest e))
+  (list 'map-key acc e)
   (list e acc)
 )
 
 (def-> last-> (acc e)
   (append e (list acc))
+  (list 'map-key acc e)
   (list e acc)
 )
 

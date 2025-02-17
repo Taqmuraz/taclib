@@ -43,5 +43,6 @@
     #:file-parent
     #:concat-path
     #:connect
+    #:symbol-of
   )
 )

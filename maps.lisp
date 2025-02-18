@@ -44,11 +44,8 @@
   `(make-hash ,@kvs)
 )
 
-(defun merge-hash (&rest hs)
-  (let ((r (make-hash-table)))
-    (dolist (h hs) (forhash (k v) h (setf (gethash k r) v)))
-    r
-  )
+(defun merge-into (type &rest ms)
+  ()
 )
 
 (defun copy-hash (h)
@@ -58,18 +55,37 @@
   )
 )
 
-(defun hash-keys (h)
+(defgeneric keys (map))
+(defgeneric vals (map))
+
+(defmethod keys ((h hash-table))
   (let ((r nil))
     (forhash (k v) h (declare (ignore v)) (setf r (nconc r (list k))))
     r
   )
 )
 
-(defun hash-vals (h)
+(defmethod vals ((h hash-table))
   (let ((r nil))
     (forhash (k v) h (declare (ignore k)) (setf r (nconc r (list v))))
     r
   )
+)
+
+(defmethod keys ((v vector))
+  (loop for i from 0 below (length v) collect i)
+)
+
+(defmethod vals ((v vector))
+  (coerce v 'list)
+)
+
+(defmethod keys ((al list))
+  (loop for (k . v) in al collect k)
+)
+
+(defmethod vals ((al list))
+  (loop for (k . v) in al collect v)
 )
 
 (defun hash->assoc (h)

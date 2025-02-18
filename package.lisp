@@ -8,10 +8,10 @@
     #:make-hash
     #:make-assoc
     #:hash
-    #:merge-hash
+    #:merge-into
+    #:keys
+    #:vals
     #:copy-hash
-    #:hash-keys
-    #:hash-vals
     #:hash->assoc
     #:assoc->hash
     #:update

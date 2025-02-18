@@ -14,6 +14,8 @@
     #:copy-hash
     #:hash->assoc
     #:assoc->hash
+    #:hash->vector
+    #:vector->hash
     #:update
     #:defvec
     #:hash-accessor

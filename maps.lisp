@@ -45,7 +45,24 @@
 )
 
 (defun merge-into (type &rest ms)
-  ()
+  (lets (
+      r (make-hash-table)
+    )
+    (loop for m in ms do
+      (typecase m
+        (list (loop for (k . v) in m do (setf (gethash k r) v)))
+        (vector (loop for i from 0 below (length m) do (setf (gethash i r) (aref m i))))
+        (hash-table (forhash (k v) m (setf (gethash k r) v)))
+        (t (error (format nil "Type ~A is not a map type~%" (type-of m))))
+      )
+    )
+    (cases type
+      'list (hash->assoc r)
+      'vector (hash->vector r)
+      'hash-table r
+      t (error (format nil "Cannot merge into ~A~%"))
+    )
+  )
 )
 
 (defun copy-hash (h)
@@ -98,6 +115,25 @@
 (defun assoc->hash (a)
   (loop with r = (make-hash-table) for (k . v) in a
     do (setf (gethash k r) v)
+    finally (return r)
+  )
+)
+
+(defun hash->vector (h)
+  (lets (
+      ks (keys h)
+      l (+ 1 (apply #'max ks))
+      r (make-array l)
+    )
+    (loop for k in ks do (setf (aref r k) (gethash k h)))
+    r
+  )
+)
+
+(defun vector->hash (v)
+  (loop with r = (make-hash-table)
+    for i from 0 below (length v)
+    do (setf (gethash i r) (aref v i))
     finally (return r)
   )
 )
@@ -169,7 +205,7 @@
 )
 
 (defmethod print-object ((h hash-table) stream)
-  (format stream "#<HASH-TABLE ~A>" (prin1-to-string (hash-keys h)))
+  (format stream "#<HASH-TABLE ~A>" (prin1-to-string (keys h)))
 )
 
 (defgeneric select-keys (map &rest keys))

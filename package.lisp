@@ -38,6 +38,7 @@
     #:mmul-mat
     #:vec-16->mat-4x4
     #:mat-4x4->vec-16
+    #:mat-scale-4x4
     #:v+ #:v- #:v* #:v/
     #:l+ #:l- #:l* #:l/
     #:part

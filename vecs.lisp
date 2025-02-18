@@ -148,3 +148,12 @@
     (aref m 3)
   )
 )
+
+(defun mat-scale-4x4 (x y z)
+  (vector
+    (vector x 0 0 0)
+    (vector 0 y 0 0)
+    (vector 0 0 z 0)
+    (vector 0 0 0 1)
+  )
+)

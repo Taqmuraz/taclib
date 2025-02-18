@@ -15,6 +15,6 @@
     (:file "seqs")
     (:file "syms")
     (:file "vecs")
-    (:file "file")
+    (:file "files")
   )
 )

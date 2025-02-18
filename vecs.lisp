@@ -157,3 +157,35 @@
     (vector 0 0 0 1)
   )
 )
+
+(defmacro classic-matrix (&rest rows)
+  (last-> rows
+    (apply #'mapcar #'list)
+    (mapcar (mpart cons 'vector))
+    (cons 'vector)
+  )
+)
+
+(defun mat-perspective (aspect fov near far)
+  (lets (
+      tan (tan (/ fov 2))
+      r (make-array 16 :initial-element 0)
+    )
+    (setf (aref r 0) (/ (* aspect tan)))
+    (setf (aref r 5) (/ tan))
+    (setf (aref r 10) (/ (+ far near) (- far near)))
+    (setf (aref r 11) 1)
+    (setf (aref r 14) (/ (* -2 far near) (- far near)))
+    (setf (aref r 15) 0)
+    (vec-16->mat-4x4 r)
+  )
+)
+
+(defun mat-translation (x y z)
+  (classic-matrix
+    (1 0 0 x)
+    (0 1 0 y)
+    (0 0 1 z)
+    (0 0 0 1)
+  )
+)

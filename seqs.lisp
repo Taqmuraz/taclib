@@ -36,3 +36,9 @@
     (cons (first seq) (loop for e in (rest seq) append (list sep e)))
   )
 )
+
+(defun take (seq n &optional result-type)
+  (lets (r (last-> seq length (min n) (subseq seq 0)))
+    (if result-type (coerce r result-type) r)
+  )
+)

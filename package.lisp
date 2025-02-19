@@ -22,6 +22,12 @@
     #:assoc-accessor
     #:map-key
     #:select-keys
+    #:take
+    #:connect
+    #:list-from-to
+    #:vector-from-to
+    #:list-range
+    #:vector-range
     #:->
     #:last->
     #:macfun
@@ -53,7 +59,6 @@
     #:sfun
     #:file-parent
     #:concat-path
-    #:connect
     #:symbol-of
   )
 )

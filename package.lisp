@@ -60,5 +60,6 @@
     #:file-parent
     #:concat-path
     #:symbol-of
+    #:keyword-of
   )
 )

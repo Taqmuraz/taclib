@@ -29,3 +29,7 @@
     )
   )
 )
+
+(defmacro sfun (params &rest body)
+  `(lambda ,(if (listp params) params (list params)) (,@body))
+)

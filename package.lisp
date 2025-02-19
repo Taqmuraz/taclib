@@ -50,6 +50,7 @@
     #:mpart
     #:comp
     #:mcomp
+    #:sfun
     #:file-parent
     #:concat-path
     #:connect

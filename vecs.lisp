@@ -101,12 +101,12 @@
       ,@(append
         (loop for i from 0 below am append
           (loop for j from 0 below an collect
-            `(declare (type fixnum ,(symbol-of 'a_ (str i) '_ (str j))))
+            `(declare (type number ,(symbol-of 'a_ (str i) '_ (str j))))
           )
         )
         (loop for i from 0 below bm append
           (loop for j from 0 below bn collect
-            `(declare (type fixnum ,(symbol-of 'b_ (str i) '_ (str j))))
+            `(declare (type number ,(symbol-of 'b_ (str i) '_ (str j))))
           )
         )
         (list (cons 'vector

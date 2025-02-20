@@ -36,6 +36,7 @@
     #:->
     #:last->
     #:applyv
+    #:pipe
     #:macfun
     #:lets
     #:conds

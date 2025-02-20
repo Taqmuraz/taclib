@@ -67,3 +67,16 @@
 (defmacro applyv (func vec-args)
   `(apply ,func (coerce ,vec-args 'list))
 )
+
+(defmacro pipe (expr &body forms)
+  (lets (e (gensym))
+    `(lets (
+        ,e ,expr
+      )
+      ,@(loop for f in forms collect (typecase f
+        (list (cons (car f) (cons e (cdr f))))
+        (keyword (list 'map-key e f))
+        (t (list f e))))
+    )
+  )
+)

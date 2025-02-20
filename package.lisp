@@ -20,6 +20,7 @@
     #:hash->func
     #:update
     #:update-keys
+    #:update-vals
     #:defvec
     #:hash-accessor
     #:assoc-accessor

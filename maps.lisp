@@ -60,7 +60,7 @@
       'list (hash->assoc r)
       'vector (hash->vector r)
       'hash-table r
-      t (error (format nil "Cannot merge into ~A~%"))
+      t (error (format nil "Cannot merge into ~A~%" type))
     )
   )
 )
@@ -185,6 +185,16 @@
 
 (defmethod update-keys ((map list) func)
   (loop for (k . v) in map collect (cons (funcall func k) v))
+)
+
+(defgeneric update-vals (map func))
+
+(defmethod update-vals ((map hash-table) func)
+  (lets (r (hash)) (forhash (k v) map (setf (gethash k r) (funcall func v))) r)
+)
+
+(defmethod update-vals ((map list) func)
+  (loop for (k . v) in map collect (cons k (funcall func v)))
 )
 
 (defmacro defvec (name &rest fields)

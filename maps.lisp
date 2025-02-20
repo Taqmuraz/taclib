@@ -14,7 +14,7 @@
 )
 
 (defmethod with-vals ((h hash-table) &rest kvs)
-  (let ((r (make-hash-table)))
+  (let ((r (hash)))
     (forhash (k v) h (setf (gethash k r) v))
     (loop for (k v) on kvs by #'cddr do (setf (gethash k r) v))
     r
@@ -22,7 +22,7 @@
 )
 
 (defmethod with-vals ((c list) &rest kvs)
-  (let ((r (make-hash-table)))
+  (let ((r (hash)))
     (loop for (k . v) in c do (setf (gethash k r) v))
     (loop for (k v) on kvs by #'cddr do (setf (gethash k r) v))
     (hash->assoc r)
@@ -30,7 +30,7 @@
 )
 
 (defun make-hash (&rest kvs)
-  (let ((r (make-hash-table)))
+  (let ((r (make-hash-table :test #'equal)))
     (loop for (k v) on kvs by #'cddr do (setf (gethash k r) v))
     r
   )
@@ -46,7 +46,7 @@
 
 (defun merge-into (type &rest ms)
   (lets (
-      r (make-hash-table)
+      r (hash)
     )
     (loop for m in ms do
       (typecase m
@@ -66,7 +66,7 @@
 )
 
 (defun copy-hash (h)
-  (let ((r (make-hash-table)))
+  (let ((r (hash)))
     (forhash (k v) h (setf (gethash k r) v))
     r
   )
@@ -113,7 +113,7 @@
 )
 
 (defun assoc->hash (a)
-  (loop with r = (make-hash-table) for (k . v) in a
+  (loop with r = (hash) for (k . v) in a
     do (setf (gethash k r) v)
     finally (return r)
   )
@@ -131,11 +131,22 @@
 )
 
 (defun vector->hash (v)
-  (loop with r = (make-hash-table)
+  (loop with r = (hash)
     for i from 0 below (length v)
     do (setf (gethash i r) (aref v i))
     finally (return r)
   )
+)
+
+(defun func->hash (f &rest keys)
+  (loop for k in keys with r = (hash)
+    do (setf (gethash k r) (funcall f k))
+    finally (return r)
+  )
+)
+
+(defun hash->func (h)
+  (sfun k map-key h k)
 )
 
 (defgeneric update (map func &rest keys))
@@ -163,6 +174,19 @@
   (hash->assoc (apply #'update (assoc->hash map) func keys))
 )
 
+(defgeneric update-keys (map func))
+
+(defmethod update-keys ((map hash-table) func)
+  (lets (r (hash))
+    (forhash (k v) map (setf (gethash (funcall func k) r) v))
+    r
+  )
+)
+
+(defmethod update-keys ((map list) func)
+  (loop for (k . v) in map collect (cons (funcall func k) v))
+)
+
 (defmacro defvec (name &rest fields)
   (let (
       (len (length fields))
@@ -187,7 +211,7 @@
 )
 
 (defun assoc-accessor (key)
-  (lambda (map) (let ((a (assoc key map))) (if a (cdr a) nil)))
+  (lambda (map) (let ((a (assoc key map :test #'equal))) (if a (cdr a) nil)))
 )
 
 (defgeneric map-key (map key &optional not-found))
@@ -201,7 +225,11 @@
 )
 
 (defmethod map-key ((map list) key &optional not-found)
-  (let ((a (assoc key map))) (if a (cdr a) not-found))
+  (let ((a (assoc key map :test #'equal))) (if a (cdr a) not-found))
+)
+
+(defmethod map-key ((map function) key &optional not-found)
+  (lets (r (funcall map key)) (if r r not-found))
 )
 
 (defmethod print-object ((h hash-table) stream)

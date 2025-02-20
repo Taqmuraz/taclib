@@ -16,7 +16,10 @@
     #:assoc->hash
     #:hash->vector
     #:vector->hash
+    #:func->hash
+    #:hash->func
     #:update
+    #:update-keys
     #:defvec
     #:hash-accessor
     #:assoc-accessor
@@ -41,6 +44,7 @@
     #:transponed
     #:mul-mat
     #:mul-mat-4x4
+    #:mul-mats-4x4
     #:transform-point-4x4
     #:mul-mats
     #:mmul-mat

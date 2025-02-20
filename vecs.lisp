@@ -127,6 +127,10 @@
   (mmul-mat a b 4 4 4 4)
 )
 
+(defun mul-mats-4x4 (&rest ms)
+  (reduce #'mul-mat-4x4 ms)
+)
+
 (defun transform-point-4x4 (m p)
   (aref (mmul-mat m (vector (aref p 0) (aref p 1) (aref p 2) 1) 4 4 4 1) 0)
 )

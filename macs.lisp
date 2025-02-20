@@ -63,3 +63,7 @@
       collect (list p (list 'map-key m k)))) ,@forms)
   )
 )
+
+(defmacro applyv (func vec-args)
+  `(apply ,func (coerce ,vec-args 'list))
+)

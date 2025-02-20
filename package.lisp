@@ -34,6 +34,7 @@
     #:vector-range
     #:->
     #:last->
+    #:applyv
     #:macfun
     #:lets
     #:conds

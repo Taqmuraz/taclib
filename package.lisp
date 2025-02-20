@@ -26,6 +26,7 @@
     #:assoc-accessor
     #:map-key
     #:select-keys
+    #:has-key-p
     #:take
     #:connect
     #:list-from-to

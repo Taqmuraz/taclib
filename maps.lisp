@@ -1,5 +1,9 @@
 (in-package #:taclib)
 
+(defmacro hash (&rest kvs)
+  `(make-hash ,@kvs)
+)
+
 (defmacro forhash (params hash &body body)
   `(maphash (lambda ,params ,@body) ,hash)
 )
@@ -38,10 +42,6 @@
 
 (defun make-assoc (&rest kvs)
   (hash->assoc (apply #'make-hash kvs))
-)
-
-(defmacro hash (&rest kvs)
-  `(make-hash ,@kvs)
 )
 
 (defun merge-into (type &rest ms)
@@ -258,4 +258,10 @@
 
 (defmethod select-keys ((map hash-table) &rest keys)
   (apply #'make-hash (loop for k in keys append (list k (map-key map k))))
+)
+
+(defgeneric has-key-p (map key))
+
+(defmethod has-key-p ((map hash-table) key)
+  (multiple-value-bind (k has) (gethash key map) has)
 )

@@ -275,3 +275,10 @@
 (defmethod has-key-p ((map hash-table) key)
   (multiple-value-bind (k has) (gethash key map) has)
 )
+
+(defun make-set (&rest items)
+  (loop with h = (hash) for i in items
+    do (setf (gethash i h) i)
+    finally (return h)
+  )
+)

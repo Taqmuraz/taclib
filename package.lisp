@@ -27,8 +27,10 @@
     #:map-key
     #:select-keys
     #:has-key-p
+    #:make-set
     #:take
     #:skip
+    #:group-by
     #:connect
     #:list-from-to
     #:vector-from-to

@@ -28,6 +28,7 @@
     #:select-keys
     #:has-key-p
     #:take
+    #:skip
     #:connect
     #:list-from-to
     #:vector-from-to

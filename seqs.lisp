@@ -38,7 +38,20 @@
 )
 
 (defun take (seq n &optional result-type)
-  (lets (r (last-> seq length (min n) (subseq seq 0)))
+  (lets (r (last-> seq length (min n) (max 0) (subseq seq 0)))
     (if result-type (coerce r result-type) r)
   )
 )
+
+(defun skip (seq n &optional result-type)
+  (lets (r (last-> seq length (min n) (max 0) (subseq seq)))
+    (if result-type (coerce r result-type) r)
+  )
+)
+
+(defun group-by (seq func)
+  (loop for v in (coerce seq 'list)
+    with r = (hash)
+    for k = (funcall func v)
+    do (setf (gethash k r) (cons v (gethash k r)))
+    finally (return r)))

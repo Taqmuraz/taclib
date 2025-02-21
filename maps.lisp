@@ -174,6 +174,16 @@
   (hash->assoc (apply #'update (assoc->hash map) func keys))
 )
 
+(defgeneric update-or-put (map func &rest keys))
+
+(defmethod update-or-put ((h hash-table) func &rest keys)
+  (loop for k in keys
+    with r = (copy-hash h)
+    do (setf (gethash k r) (funcall func k (gethash k r)))
+    finally (return r)
+  )
+)
+
 (defgeneric update-keys (map func))
 
 (defmethod update-keys ((map hash-table) func)

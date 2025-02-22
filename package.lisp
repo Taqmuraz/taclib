@@ -61,6 +61,10 @@
     #:classic-matrix
     #:mat-perspective
     #:mat-translation
+    #:mat-rotation-x
+    #:mat-rotation-y
+    #:mat-rotation-z
+    #:mat-rotation
     #:v+ #:v- #:v* #:v/
     #:l+ #:l- #:l* #:l/
     #:part

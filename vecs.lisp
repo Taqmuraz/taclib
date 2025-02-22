@@ -195,3 +195,53 @@
     (0 0 0 1)
   )
 )
+
+(defun mat-rotation-x (rad)
+  (lets (
+      s (sin rad)
+      c (cos rad)
+    )
+    (classic-matrix
+      (1 0 0 0)
+      (0 c (- s) 0)
+      (0 s c 0)
+      (0 0 0 1)
+    )
+  )
+)
+
+(defun mat-rotation-y (rad)
+  (lets (
+      s (sin rad)
+      c (cos rad)
+    )
+    (classic-matrix
+      (c 0 s 0)
+      (0 1 0 0)
+      ((- s) 0 c 0)
+      (0 0 0 1)
+    )
+  )
+)
+
+(defun mat-rotation-z (rad)
+  (lets (
+      s (sin rad)
+      c (cos rad)
+    )
+    (classic-matrix
+      (c (- s) 0 0)
+      (s c 0 0)
+      (0 0 1 0)
+      (0 0 0 1)
+    )
+  )
+)
+
+(defun mat-rotation (x y z)
+  (mul-mats-4x4
+    (mat-rotation-z z)
+    (mat-rotation-y y)
+    (mat-rotation-x x)
+  )
+)

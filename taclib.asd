@@ -9,12 +9,12 @@
   :components (
     (:file "package")
     (:file "taclib")
+    (:file "syms")
     (:file "macs")
     (:file "bst")
     (:file "funcs")
     (:file "maps")
     (:file "seqs")
-    (:file "syms")
     (:file "vecs")
     (:file "files")
   )

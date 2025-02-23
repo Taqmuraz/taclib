@@ -1,17 +1,11 @@
 (in-package #:taclib)
 
-(defstruct pair key val)
-
-(defmethod print-object ((p pair) stream)
-  (format stream "(~A ~A)" (pair-key p) (pair-val p))
-)
-
 (defun key< (<)
-  (lambda (a b) (funcall < (pair-key a) (pair-key b)))
+  (lambda (a b) (funcall < (car a) (car b)))
 )
 
 (defun key= (=)
-  (lambda (a b) (funcall = (pair-key a) (pair-key b)))
+  (lambda (a b) (funcall = (car a) (car b)))
 )
 
 (defstruct
@@ -28,6 +22,12 @@
 (defun tree-height (tree)
   (if tree (node-height tree) 0)
 )
+
+(defun tree-root (tree) (node-val tree))
+
+(defun tree-l (tree) (node-l tree))
+
+(defun tree-r (tree) (node-r tree))
 
 (defun node-balance (n)
   (if n
@@ -110,7 +110,7 @@
 )
 
 (defun insert-value (tree key val < =)
-  (insert-node tree (make-node :val (make-pair :key key :val val)) < =)
+  (insert-node tree (make-node :val (cons key val)) < =)
 )
 
 (defun tree-min (tree)
@@ -131,7 +131,7 @@
   (if tree
     (append
       (tree-content (node-l tree) :key key)
-      (list (funcall (if key key #'pair-val) (node-val tree)))
+      (list (funcall (if key key #'cdr) (node-val tree)))
       (tree-content (node-r tree) :key key)
     )
   )
@@ -139,9 +139,8 @@
 
 (defun search-tree (tree item < = &key key)
   (let (
-      (kf (if key key #'identity))
+      (kf (if key key #'car))
       (n tree)
-      (l tree)
     )
     (loop while n do
       (let (
@@ -150,14 +149,12 @@
         (setf n
           (cond
             ((funcall < item k) (node-l n))
-            ((funcall = item k) (return-from search-tree (values n l)))
+            ((funcall = item k) (return-from search-tree n))
             (t (node-r n))
           )
         )
-        (when n (setf l n))
       )
     )
-    (values nil l)
   )
 )
 

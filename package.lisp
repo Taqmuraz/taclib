@@ -78,11 +78,14 @@
     #:symbol-of
     #:keyword-of
     #:search-tree
-    #:assoc-tree
+    #:assoc->tree
     #:tree-content
     #:tree-min
     #:tree-max
-    #:tree-height
     #:make-tree
+    #:tree-root
+    #:tree-height
+    #:tree-l
+    #:tree-r
   )
 )

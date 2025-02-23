@@ -207,25 +207,6 @@
   (loop for (k . v) in map collect (cons k (funcall func v)))
 )
 
-(defmacro defvec (name &rest fields)
-  (let (
-      (len (length fields))
-      (accessors (mapcar (mpartial symbol-of name '-) fields))
-      (ctor name)
-    )
-    `(progn
-      (defun ,ctor ,fields (vector ,@fields))
-      ,@(mapcan (lambda (a i)
-        `(
-          (defmacro ,a (v) (list 'aref v ,i))
-          (defun ,(symbol-of 'f a) (v) (declare (type (simple-vector ,len) v)) (aref v ,i))
-        )
-      ) accessors (list-range len))
-      t
-    )
-  )
-)
-
 (defun hash-accessor (key)
   (lambda (table) (declare (type hash-table table)) (gethash key table))
 )

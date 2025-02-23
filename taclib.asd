@@ -10,6 +10,7 @@
     (:file "package")
     (:file "taclib")
     (:file "macs")
+    (:file "bst")
     (:file "funcs")
     (:file "maps")
     (:file "seqs")

@@ -55,3 +55,5 @@
     for k = (funcall func v)
     do (setf (gethash k r) (cons v (gethash k r)))
     finally (return r)))
+
+(defun cycled (l) (lets (c (copy-list l)) (nconc c c)))

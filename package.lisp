@@ -31,6 +31,7 @@
     #:take
     #:skip
     #:group-by
+    #:cycled
     #:connect
     #:list-from-to
     #:vector-from-to
@@ -76,5 +77,12 @@
     #:concat-path
     #:symbol-of
     #:keyword-of
+    #:search-tree
+    #:assoc-tree
+    #:tree-content
+    #:tree-min
+    #:tree-max
+    #:tree-height
+    #:make-tree
   )
 )

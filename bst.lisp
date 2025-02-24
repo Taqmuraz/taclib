@@ -158,6 +158,31 @@
   )
 )
 
+(defun find-bounds (tree item < &key key)
+  (lets (
+      n tree
+      kf (if key key #'car)
+      min (-> tree tree-min node-val car)
+      max (-> tree tree-max node-val car)
+    )
+    (loop while n do
+      (lets (
+          k (last-> n node-val (funcall kf))
+        )
+        (setf n (cond
+          ((funcall < item k)
+            (when (funcall < k max) (setf max k))
+            (node-l n))
+          (t
+            (when (funcall < min k) (setf min k))
+            (node-r n))
+        ))
+      )
+    )
+    (list min max)
+  )
+)
+
 (defun assoc->tree (pairs < =)
   (reduce
     (lambda (r e) (insert-value r (car e) (cdr e) (key< <) (key= =)))

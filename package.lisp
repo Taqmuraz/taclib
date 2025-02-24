@@ -87,5 +87,6 @@
     #:tree-height
     #:tree-l
     #:tree-r
+    #:find-bounds
   )
 )

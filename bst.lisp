@@ -162,19 +162,22 @@
   (lets (
       n tree
       kf (if key key #'car)
-      min (-> tree tree-min node-val car)
-      max (-> tree tree-max node-val car)
+      min (-> tree tree-min node-val)
+      max (-> tree tree-max node-val)
     )
     (loop while n do
       (lets (
-          k (last-> n node-val (funcall kf))
+          v (node-val n)
+          k (funcall kf v)
+          max-k (car max)
+          min-k (car min)
         )
         (setf n (cond
           ((funcall < item k)
-            (when (funcall < k max) (setf max k))
+            (when (funcall < k max-k) (setf max v))
             (node-l n))
           (t
-            (when (funcall < min k) (setf min k))
+            (when (funcall < min-k k) (setf min v))
             (node-r n))
         ))
       )

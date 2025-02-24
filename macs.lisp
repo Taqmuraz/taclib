@@ -99,3 +99,11 @@
     )
   )
 )
+
+(defmacro if-let (cond var yes &optional no)
+  (when (-> var symbolp null)
+    (error
+      (format "Error expanding if-let, var must be a symbol : (if-let ~A ~A ~A ~A)~%"
+        cond var yes no)))
+  `(let ((,var ,cond)) (if ,var ,yes ,no))
+)

@@ -73,6 +73,7 @@
     #:comp
     #:mcomp
     #:sfun
+    #:if-let
     #:file-parent
     #:concat-path
     #:symbol-of

@@ -77,6 +77,7 @@
         (list (cons (car f) (cons e (cdr f))))
         (keyword (list 'map-key e f))
         (t (list f e))))
+      ,e
     )
   )
 )

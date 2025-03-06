@@ -46,7 +46,7 @@
 )
 
 (defun transponed (m)
-  (apply #'map 'vector #'vector (map 'list #'identity m))
+  (apply #'map 'vector #'vector (coerce m 'list))
 )
 
 (defun mul-mat (a b)

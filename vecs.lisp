@@ -49,6 +49,20 @@
   (apply #'map 'vector #'vector (coerce m 'list))
 )
 
+(defmacro mtransponed (m s)
+  (lets (v (gensym))
+    `(lets (,v ,m)
+      (vector ,@(loop for i from 0 below s collect
+        (cons 'vector (loop for j from 0 below s collect
+          `(aref (aref ,v ,j) ,i)
+        ))
+      ))
+    )
+  )
+)
+
+(defun transponed-4x4 (m) (mtransponed m 4))
+
 (defun mul-mat (a b)
   (let* (
       (at (transponed a))
@@ -153,6 +167,10 @@
     (aref m 2)
     (aref m 3)
   )
+)
+
+(defun mat-copy (m)
+  (map 'vector (sfun r copy-seq r) m)
 )
 
 (defun mat-scale-4x4 (x y z)

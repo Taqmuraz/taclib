@@ -50,6 +50,8 @@
     #:ldot
     #:mat-identity
     #:transponed
+    #:mtransponed
+    #:transponed-4x4
     #:mul-mat
     #:mul-mat-4x4
     #:mul-mats-4x4

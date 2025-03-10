@@ -263,3 +263,20 @@
     finally (return h)
   )
 )
+
+(defgeneric map-pairs (func map))
+
+(defmethod map-pairs (func (map vector))
+  (loop for i from 0 below (length map) collect
+    (funcall func i (aref map i))))
+
+(defmethod map-pairs (func (map hash-table))
+  (lets (r nil)
+    (forhash (k v) map (push (funcall func k v) r)) (nreverse r)))
+
+(defmethod map-pairs (func (map list))
+  (loop for (k . v) in map collect (funcall func k v)))
+
+(defmacro on-map ((k v) map &body body)
+  `(map-pairs (lambda (,k ,v) ,@body) ,map)
+)

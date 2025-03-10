@@ -28,6 +28,8 @@
     #:select-keys
     #:has-key-p
     #:make-set
+    #:map-pairs
+    #:on-map
     #:take
     #:skip
     #:group-by

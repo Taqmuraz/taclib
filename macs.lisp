@@ -64,6 +64,14 @@
   )
 )
 
+(defmacro with-maps-keys (kms &body forms)
+  (reduce (lambda (km fs) `(with-map-keys ,(car km) ,(cadr km) ,fs))
+    kms
+    :initial-value `(progn ,@forms)
+    :from-end t
+  )
+)
+
 (defmacro applyv (func vec-args)
   `(apply ,func (coerce ,vec-args 'list))
 )

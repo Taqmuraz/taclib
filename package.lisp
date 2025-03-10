@@ -46,6 +46,7 @@
     #:conds
     #:cases
     #:with-map-keys
+    #:with-maps-keys
     #:vdot
     #:ldot
     #:mat-identity

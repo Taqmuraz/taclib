@@ -34,6 +34,7 @@
     #:skip
     #:group-by
     #:cycled
+    #:concat
     #:connect
     #:list-from-to
     #:vector-from-to

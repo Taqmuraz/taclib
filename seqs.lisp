@@ -57,3 +57,7 @@
     finally (return r)))
 
 (defun cycled (l) (lets (c (copy-list l)) (nconc c c)))
+
+(defun concat (type cols)
+  (apply #'concatenate type
+    (coerce cols 'list)))

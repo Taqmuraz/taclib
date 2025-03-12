@@ -8,6 +8,17 @@
   `(maphash (lambda ,params ,@body) ,hash)
 )
 
+(defmacro forvec ((i v) vec &body body)
+  (once (vec)
+    `(if (vectorp ,vec)
+      (loop for ,i from 0 below (length ,vec) do
+        (lets (,v (aref ,vec ,i)) ,@body)
+      )
+      (error (format nil "Expected vector, but got ~A~%" ,vec))
+    )
+  )
+)
+
 (defgeneric with-vals (v &rest kvs))
 
 (defmethod with-vals ((v vector) &rest kvs)

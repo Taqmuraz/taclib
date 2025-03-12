@@ -1,5 +1,20 @@
 (in-package #:taclib)
 
+(defun symbol-expr-pair-p (p)
+  (and (listp p) (symbolp (car p)) (cdr p) p)
+)
+
+(defmacro once (vars &body body)
+  (let ((syms (loop for v in vars collect
+    (typecase v
+      (symbol (list (gensym "ONCE") v v))
+      ((and list (satisfies symbol-expr-pair-p)) (cons (gensym "ONCE") v))
+      (t (error (format nil "Expected symbol or (symbol expr), but got ~A~%" v)))))))
+    `(let ,(loop for (g v e) in syms collect (list g '(gensym)))
+      `(let (,,@(loop for (g v e) in syms collect ``(,,g ,,e)))
+        ,(let ,(loop for (g v) in syms collect (list v g)) ,@body))))
+)
+
 (defmacro def-> (name params list-case keyword-case non-list-case)
   `(defmacro ,name (&body exprs)
     (reduce

@@ -4,6 +4,7 @@
   (:use #:cl)
   (:export
     #:forhash
+    #:forvec
     #:with-vals
     #:make-hash
     #:make-assoc
@@ -40,6 +41,7 @@
     #:vector-from-to
     #:list-range
     #:vector-range
+    #:once
     #:->
     #:last->
     #:applyv

@@ -39,6 +39,7 @@
     #:cycled
     #:concat
     #:connect
+    #:hash-set
     #:list-from-to
     #:vector-from-to
     #:list-range

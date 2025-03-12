@@ -61,3 +61,10 @@
 (defun concat (type cols)
   (apply #'concatenate type
     (coerce cols 'list)))
+
+(defun hash-set (&rest elements)
+  (lets (r (hash))
+    (loop for e in elements do (setf (gethash e r) e))
+    r
+  )
+)

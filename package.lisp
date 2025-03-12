@@ -32,6 +32,7 @@
     #:make-set
     #:map-pairs
     #:on-map
+    #:map-by-key
     #:take
     #:skip
     #:group-by

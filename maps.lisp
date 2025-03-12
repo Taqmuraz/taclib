@@ -296,3 +296,7 @@
 (defmacro on-map ((k v) map &body body)
   `(map-pairs (lambda (,k ,v) ,@body) ,map)
 )
+
+(defun map-by-key (type key map)
+  (map type (sfun m map-key m key) map)
+)

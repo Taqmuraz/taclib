@@ -5,6 +5,7 @@
   (:export
     #:forhash
     #:forvec
+    #:for-maps-list
     #:with-vals
     #:make-hash
     #:make-assoc

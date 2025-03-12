@@ -19,6 +19,11 @@
   )
 )
 
+(defmacro for-maps-list (keys maps &body body)
+  (lets (m (gensym))
+    (once (maps)
+      `(loop for ,m in ,maps do (with-map-keys ,keys ,m ,@body)))))
+
 (defgeneric with-vals (v &rest kvs))
 
 (defmethod with-vals ((v vector) &rest kvs)

@@ -68,3 +68,7 @@
     r
   )
 )
+
+(defun into-vector (seq) (coerce seq 'vector))
+
+(defun into-list (seq) (coerce seq 'list))

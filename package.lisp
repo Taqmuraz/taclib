@@ -40,6 +40,8 @@
     #:concat
     #:connect
     #:hash-set
+    #:into-vector
+    #:into-list
     #:list-from-to
     #:vector-from-to
     #:list-range

@@ -271,3 +271,11 @@
     (mat-rotation-x x)
   )
 )
+
+(defun mat-pos-rot (pos rot)
+  (mul-mat-4x4 (applyv 'mat-translation pos) (applyv 'mat-rotation rot))
+)
+
+(defun mat-pos-rot-inversed (pos rot)
+  (mul-mat-4x4 (applyv 'mat-rotation (v- rot)) (applyv 'mat-translation (v- pos)))
+)

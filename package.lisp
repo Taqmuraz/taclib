@@ -80,6 +80,8 @@
     #:mat-rotation-y
     #:mat-rotation-z
     #:mat-rotation
+    #:mat-pos-rot
+    #:mat-pos-rot-inversed
     #:v+ #:v- #:v* #:v/
     #:l+ #:l- #:l* #:l/
     #:part

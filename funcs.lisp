@@ -33,3 +33,5 @@
 (defmacro sfun (params &rest body)
   `(lambda ,(if (listp params) params (list params)) (,@body))
 )
+
+(defun always-nil (&rest args) nil)

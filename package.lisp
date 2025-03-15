@@ -57,6 +57,7 @@
     #:with-maps-keys
     #:vdot
     #:ldot
+    #:repeat
     #:mat-identity
     #:transponed
     #:mtransponed

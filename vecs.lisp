@@ -36,6 +36,14 @@
   (reduce #'+ (l* a b))
 )
 
+(defun repeat (type times value)
+  (cases type
+    vector (make-array times :initial-element value)
+    list (loop repeat times collect value)
+    t (error (format nil "Cannot repeat value into ~A" type))
+  )
+)
+
 (defun mat-identity (n)
   (loop for i from 0 below n
     with r = (make-array n)

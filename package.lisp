@@ -67,7 +67,8 @@
     #:mul-mat
     #:mul-mat-4x4
     #:mul-mats-4x4
-    #:transform-point-4x4
+    #:transform-point
+    #:transform-vector
     #:mul-mats
     #:mmul-mat
     #:vec-16->mat-4x4

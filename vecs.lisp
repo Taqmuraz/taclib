@@ -153,9 +153,15 @@
   (reduce #'mul-mat-4x4 ms)
 )
 
-(defun transform-point-4x4 (m p)
+(defun transform-point (m p)
   (subseq
     (aref (mmul-mat m (vector (vector (aref p 0) (aref p 1) (aref p 2) 1)) 4 4 4 1) 0)
+      0 3)
+)
+
+(defun transform-vector (m p)
+  (subseq
+    (aref (mmul-mat m (vector (vector (aref p 0) (aref p 1) (aref p 2) 0)) 4 4 4 1) 0)
       0 3)
 )
 

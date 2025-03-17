@@ -72,3 +72,10 @@
 (defun into-vector (seq) (coerce seq 'vector))
 
 (defun into-list (seq) (coerce seq 'list))
+
+(defun into-string (val)
+  (typecase val
+    (number (format nil "~A" val))
+    (t (coerce val 'string))
+  )
+)

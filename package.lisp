@@ -28,6 +28,7 @@
     #:assoc-accessor
     #:map-key
     #:select-keys
+    #:select-vals
     #:has-key-p
     #:make-set
     #:map-pairs
@@ -42,6 +43,7 @@
     #:hash-set
     #:into-vector
     #:into-list
+    #:into-string
     #:list-from-to
     #:vector-from-to
     #:list-range

@@ -267,6 +267,10 @@
   (apply #'make-hash (loop for k in keys append (list k (map-key map k))))
 )
 
+(defun select-vals (map &rest keys)
+  (loop for k in keys collect (map-key map k))
+)
+
 (defgeneric has-key-p (map key))
 
 (defmethod has-key-p ((map hash-table) key)

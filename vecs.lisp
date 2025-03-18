@@ -44,17 +44,11 @@
   )
 )
 
-(defmacro vn (v n) `(vector ,@(loop repeat n collect v)))
+(defun vv (x) (vector x x))
 
-(defmacro def-vns (s e)
-  `(progn
-    ,@(loop for i from s to e for n = (symbol-of 'v (into-string i)) append
-      `((defun ,n (x) (vn x ,i)) (export (quote ,n)))
-    )
-  )
-)
+(defun vvv (x) (vector x x x))
 
-(def-vns 2 16)
+(defun vvvv (x) (vector x x x x))
 
 (defun mat-identity (n)
   (loop for i from 0 below n

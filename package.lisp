@@ -62,6 +62,7 @@
     #:vdot
     #:ldot
     #:repeat
+    #:vv #:vvv #:vvvv
     #:mat-identity
     #:transponed
     #:mtransponed

@@ -59,8 +59,9 @@
     #:cases
     #:with-map-keys
     #:with-maps-keys
-    #:vdot
-    #:ldot
+    #:dot
+    #:len
+    #:norm
     #:repeat
     #:vv #:vvv #:vvvv
     #:mat-identity

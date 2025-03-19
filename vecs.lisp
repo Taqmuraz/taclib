@@ -23,17 +23,32 @@
 (def-vec-type 'vector (v+ #'+) (v- #'-) (v* #'*) (v/ #'/))
 (def-vec-type 'list (l+ #'+) (l- #'-) (l* #'*) (l/ #'/))
 
-(defun vdot (a b)
-  (loop
-    with al = (length a) and bl = (length b) and r = 0
-    for i from 0 below (min al bl)
-    do (incf r (* (aref a i) (aref b i)))
-    finally (return r)
-  )
+(defgeneric dot (a b))
+
+(defgeneric len (v))
+
+(defgeneric norm (v))
+
+(defmethod dot ((a vector) (b vector))
+  (loop for ae across a for be across b sum (* ae be))
 )
 
-(defun ldot (a b)
+(defmethod dot ((a sequence) (b sequence))
   (reduce #'+ (l* a b))
+)
+
+(defmethod dot ((a list) (b list))
+  (loop for ae in a for be in b sum (* ae be))
+)
+
+(defmethod len ((v sequence)) (sqrt (dot v v)))
+
+(defmethod norm ((v vector))
+  (lets (l (len v)) (map 'vector (sfun e / e l) v))
+)
+
+(defmethod norm ((v list))
+  (lets (l (len v)) (mapcar (sfun e / e l) v))
 )
 
 (defun repeat (type times value)

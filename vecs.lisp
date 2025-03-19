@@ -44,11 +44,11 @@
 (defmethod len ((v sequence)) (sqrt (dot v v)))
 
 (defmethod norm ((v vector))
-  (lets (l (len v)) (map 'vector (sfun e / e l) v))
+  (lets (l (len v)) (map 'vector (sfun e if (zerop l) 0 (/ e l)) v))
 )
 
 (defmethod norm ((v list))
-  (lets (l (len v)) (mapcar (sfun e / e l) v))
+  (lets (l (len v)) (mapcar (sfun e if (zerop l) 0 (/ e l)) v))
 )
 
 (defun repeat (type times value)

@@ -44,6 +44,7 @@
     #:into-vector
     #:into-list
     #:into-string
+    #:at-least-one
     #:list-from-to
     #:vector-from-to
     #:list-range

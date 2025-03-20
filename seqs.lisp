@@ -79,3 +79,13 @@
     (t (coerce val 'string))
   )
 )
+
+(defgeneric at-least-one (seq pred))
+
+(defmethod at-least-one ((seq list) pred)
+  (loop for e in seq do (when (funcall pred e) (return-from at-least-one t)))
+)
+
+(defmethod at-least-one ((seq vector) pred)
+  (loop for e across seq do (when (funcall pred e) (return-from at-least-one t)))
+)

@@ -75,6 +75,12 @@
 
 (defun vvvv (x) (vector x x x x))
 
+(defun ll (x) (list x x))
+
+(defun lll (x) (list x x x))
+
+(defun llll (x) (list x x x x))
+
 (defun cross (a b)
   (macrolet (
       (x (v) `(elt ,v 0))

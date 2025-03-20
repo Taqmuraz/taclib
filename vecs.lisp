@@ -20,8 +20,8 @@
   ))
 )
 
-(def-vec-type 'vector (v+ #'+) (v- #'-) (v* #'*) (v/ #'/))
-(def-vec-type 'list (l+ #'+) (l- #'-) (l* #'*) (l/ #'/))
+(def-vec-type 'vector (v+ #'+) (v- #'-) (v* #'*) (v/ #'/) (vmin #'min) (vmax #'max))
+(def-vec-type 'list (l+ #'+) (l- #'-) (l* #'*) (l/ #'/) (lmin #'min) (lmax #'max))
 
 (defgeneric dot (a b))
 

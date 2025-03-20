@@ -65,6 +65,7 @@
     #:norm
     #:repeat
     #:vv #:vvv #:vvvv
+    #:ll #:lll #:llll
     #:cross
     #:mat-identity
     #:transponed
@@ -89,8 +90,8 @@
     #:mat-rotation
     #:mat-pos-rot
     #:mat-pos-rot-inversed
-    #:v+ #:v- #:v* #:v/
-    #:l+ #:l- #:l* #:l/
+    #:v+ #:v- #:v* #:v/ #:vmin #:vmax
+    #:l+ #:l- #:l* #:l/ #:lmin #:lmax
     #:part
     #:mpart
     #:comp

@@ -75,6 +75,20 @@
 
 (defun vvvv (x) (vector x x x x))
 
+(defun cross (a b)
+  (macrolet (
+      (x (v) `(elt ,v 0))
+      (y (v) `(elt ,v 1))
+      (z (v) `(elt ,v 2))
+    )
+    (vector
+      (- (* (y a) (z b)) (* (z a) (y b)))
+      (- (* (z a) (x b)) (* (x a) (z b)))
+      (- (* (x a) (y b)) (* (y a) (x b)))
+    )
+  )
+)
+
 (defun mat-identity (n)
   (loop for i from 0 below n
     with r = (make-array n)

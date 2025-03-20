@@ -64,6 +64,7 @@
     #:norm
     #:repeat
     #:vv #:vvv #:vvvv
+    #:cross
     #:mat-identity
     #:transponed
     #:mtransponed

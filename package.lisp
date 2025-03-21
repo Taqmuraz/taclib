@@ -98,6 +98,7 @@
     #:mcomp
     #:sfun
     #:if-let
+    #:with-items
     #:file-parent
     #:concat-path
     #:symbol-of

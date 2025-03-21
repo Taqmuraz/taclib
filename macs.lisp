@@ -131,3 +131,9 @@
         cond var yes no)))
   `(let ((,var ,cond)) (if ,var ,yes ,no))
 )
+
+(defmacro with-items (vars l &body body)
+  (lets (r (gensym))
+    `(let* ((,r ,l)(,(car vars) (car ,r)) ,@(loop for v in (cdr vars) append `((,r (cdr ,r))(,v (car ,r))))) ,@body)
+  )
+)

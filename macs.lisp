@@ -137,3 +137,9 @@
     `(let* ((,r ,l)(,(car vars) (car ,r)) ,@(loop for v in (cdr vars) append `((,r (cdr ,r))(,v (car ,r))))) ,@body)
   )
 )
+
+(defmacro cases-equal (val &body forms)
+  (once (val)
+    `(cond ,@(loop for (test expr) on forms by #'cddr collect `((equal ,val ,test) ,expr)))
+  )
+)

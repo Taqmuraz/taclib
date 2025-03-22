@@ -99,6 +99,7 @@
     #:sfun
     #:if-let
     #:with-items
+    #:cases-equal
     #:file-parent
     #:concat-path
     #:symbol-of

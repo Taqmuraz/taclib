@@ -92,7 +92,7 @@
 
 (defmacro push-when (pred item list)
   (lets (i (gensym))
-    `(lets (,i ,item) (when ,i (push ,i ,list)))
+    `(lets (,i (funcall ,pred ,item)) (when ,i (push ,i ,list)))
   )
 )
 

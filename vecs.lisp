@@ -1,5 +1,29 @@
 (in-package #:taclib)
 
+(defmacro map-vector-3 (type op vs)
+  `(lets (
+      r (copy-seq (coerce (car ,vs) ',type))
+    )
+    (if (-> ,vs cdr null)
+      (progn ,@
+        (loop for i from 0 below 3 collect
+          `(setf (elt r ,i) (,op (elt r ,i)))
+        )
+      )
+      (loop for v in (cdr ,vs)
+        do
+        (progn ,@
+          (loop for i from 0 below 3
+            collect
+            `(setf (elt r ,i) (,op (elt r ,i) (elt v ,i)))
+          )
+        )
+      )
+    )
+    r
+  )
+)
+
 (defmacro defop (name params fbody mbody)
   (list 'progn
     `(defun ,name ,params ,fbody)
@@ -7,21 +31,17 @@
   )
 )
 
-(defmacro def-vec-op (type name op)
-  `(defop ,name (&rest vs)
-    (apply #'map ,type ,op vs)
-    (append (list 'map ',type ',op) vs)
-  )
-)
-
 (defmacro def-vec-type (type &rest ops)
-  (cons 'progn (loop for (name op) in ops collect
-    `(def-vec-op ,type ,name ,op)
+  `(progn ,@(loop for (name op) in ops collect
+    `(defop ,name (&rest vs)
+      (map-vector-3 ,type ,op vs)
+      (map-vector-3 ,type ,op vs)
+    )
   ))
 )
 
-(def-vec-type 'vector (v+ #'+) (v- #'-) (v* #'*) (v/ #'/) (vmin #'min) (vmax #'max))
-(def-vec-type 'list (l+ #'+) (l- #'-) (l* #'*) (l/ #'/) (lmin #'min) (lmax #'max))
+(def-vec-type vector (v+ +) (v- -) (v* *) (v/ /) (vmin min) (vmax max))
+(def-vec-type list (l+ +) (l- -) (l* *) (l/ /) (lmin min) (lmax max))
 
 (defgeneric dot (a b))
 

@@ -75,11 +75,23 @@
 
 (defun vvvv (x) (vector x x x x))
 
+(defun vv* (x &rest vals) (vv (apply #'* x vals)))
+
+(defun vvv* (x &rest vals) (vvv (apply #'* x vals)))
+
+(defun vvvv* (x &rest vals) (vvvv (apply #'* x vals)))
+
 (defun ll (x) (list x x))
 
 (defun lll (x) (list x x x))
 
 (defun llll (x) (list x x x x))
+
+(defun ll* (x &rest vals) (ll (apply #'* x vals)))
+
+(defun lll* (x &rest vals) (lll (apply #'* x vals)))
+
+(defun llll* (x &rest vals) (llll (apply #'* x vals)))
 
 (defun cross (a b)
   (macrolet (

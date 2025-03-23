@@ -89,3 +89,13 @@
 (defmethod at-least-one ((seq vector) pred)
   (loop for e across seq do (when (funcall pred e) (return-from at-least-one t)))
 )
+
+(defmacro push-when (pred item list)
+  (lets (i (gensym))
+    `(lets (,i ,item) (when ,i (push ,i ,list)))
+  )
+)
+
+(defun all-possible-pairs (list)
+  (mapcon (sfun l mapcar (sfun e list (car l) e) (cdr l)) list)
+)

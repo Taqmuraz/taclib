@@ -304,3 +304,11 @@
 (defun map-by-key (type key map)
   (map type (sfun m map-key m key) map)
 )
+
+(defmacro hash-once (key hash-table &body body)
+  (once (key hash-table)
+    `(when (not (has-key-p ,hash-table ,key))
+      (setf (gethash ,key ,hash-table) (progn ,@body))
+    )
+  )
+)

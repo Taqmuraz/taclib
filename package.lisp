@@ -34,6 +34,7 @@
     #:map-pairs
     #:on-map
     #:map-by-key
+    #:hash-once
     #:take
     #:skip
     #:group-by
@@ -45,6 +46,8 @@
     #:into-list
     #:into-string
     #:at-least-one
+    #:push-when
+    #:all-possible-pairs
     #:list-from-to
     #:vector-from-to
     #:list-range
@@ -64,8 +67,8 @@
     #:len
     #:norm
     #:repeat
-    #:vv #:vvv #:vvvv
-    #:ll #:lll #:llll
+    #:vv #:vvv #:vvvv vv* vvv* vvvv*
+    #:ll #:lll #:llll ll* lll* llll*
     #:cross
     #:mat-identity
     #:transponed

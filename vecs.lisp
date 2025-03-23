@@ -64,10 +64,13 @@
 (defmethod len ((v sequence)) (sqrt (dot v v)))
 
 (defmethod norm ((v vector))
-  (lets (l (len v))
+  (lets (c (length v) l (len v))
     (if (zerop l)
-      (make-array (length v) :initial-element 0)
-      (map 'vector (sfun e / e l) v)
+      (make-array c :initial-element 0)
+      (lets (r (make-array c))
+        (loop for i from 0 below c do (setf (aref r i) (/ (aref v i) l)))
+        r
+      )
     )
   )
 )

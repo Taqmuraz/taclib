@@ -95,6 +95,7 @@
     #:mat-pos-rot-inversed
     #:bvec
     #:uvec
+    #:invec
     #:v+ #:v- #:v* #:v/ #:vmin #:vmax
     #:l+ #:l- #:l* #:l/ #:lmin #:lmax
     #:part

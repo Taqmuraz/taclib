@@ -54,6 +54,20 @@
   )
 )
 
+(defmacro invec (type op v)
+  (once (v)
+    (cases type
+      vector `(,op ,@
+        (loop for i from 0 below 3 collect
+          `(aref ,v ,i)
+        )
+      )
+      list `(with-items (x y z) ,v (,op x y z))
+      t (error (format nil "Wrong type for invec macro : ~A" type))
+    )
+  )
+)
+
 (defmacro defop (name params fbody mbody)
   (list 'progn
     `(defun ,name ,params ,fbody)

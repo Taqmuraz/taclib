@@ -24,6 +24,25 @@
   )
 )
 
+(defmacro binary-vector-3 (type op a b)
+  (once (a b)
+    (cases type
+      vector (lets (r (gensym))
+        `(lets (,r (make-array 3)) ,@
+          (loop for i from 0 below 3 collect
+            `(setf (aref ,r ,i) (,op (aref ,a ,i) (aref ,b ,i)))
+          )
+          ,r
+        )
+      )
+      list (lets (ae (gensym) be (gensym))
+        `(loop for ,ae in ,a for ,be in ,b collect (,op ,ae ,be))
+      )
+      t (error (format nil "Wrong type for binary-vector-3 macro : ~A" type))
+    )
+  )
+)
+
 (defmacro defop (name params fbody mbody)
   (list 'progn
     `(defun ,name ,params ,fbody)

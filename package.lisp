@@ -93,6 +93,7 @@
     #:mat-rotation
     #:mat-pos-rot
     #:mat-pos-rot-inversed
+    #:binary-vector-3
     #:v+ #:v- #:v* #:v/ #:vmin #:vmax
     #:l+ #:l- #:l* #:l/ #:lmin #:lmax
     #:part

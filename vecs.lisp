@@ -24,21 +24,32 @@
   )
 )
 
-(defmacro binary-vector-3 (type op a b)
+(defmacro bvec (type op a b)
   (once (a b)
     (cases type
-      vector (lets (r (gensym))
-        `(lets (,r (make-array 3)) ,@
-          (loop for i from 0 below 3 collect
-            `(setf (aref ,r ,i) (,op (aref ,a ,i) (aref ,b ,i)))
-          )
-          ,r
+      vector `(vector ,@
+        (loop for i from 0 below 3 collect
+          `(,op (aref ,a ,i) (aref ,b ,i))
         )
       )
       list (lets (ae (gensym) be (gensym))
         `(loop for ,ae in ,a for ,be in ,b collect (,op ,ae ,be))
       )
-      t (error (format nil "Wrong type for binary-vector-3 macro : ~A" type))
+      t (error (format nil "Wrong type for bvec macro : ~A" type))
+    )
+  )
+)
+
+(defmacro uvec (type op v)
+  (once (v)
+    (cases type
+      vector `(vector ,@
+        (loop for i from 0 below 3 collect
+          `(,op (aref ,v ,i))
+        )
+      )
+      list (lets (e (gensym)) `(loop for ,e in ,v collect (,op ,e)))
+      t (error (format nil "Wrong type for uvec macro : ~A" type))
     )
   )
 )

@@ -1,22 +1,19 @@
 (in-package #:taclib)
 
-(defmacro map-vector-3 (type op vs)
+(defmacro map-vector (type op vs)
   `(lets (
       r (copy-seq (coerce (car ,vs) ',type))
+      l (length r)
     )
     (if (-> ,vs cdr null)
-      (progn ,@
-        (loop for i from 0 below 3 collect
-          `(setf (elt r ,i) (,op (elt r ,i)))
-        )
+      (loop for i from 0 below l collect
+        (setf (elt r i) (,op (elt r i)))
       )
       (loop for v in (cdr ,vs)
         do
-        (progn ,@
-          (loop for i from 0 below 3
-            collect
-            `(setf (elt r ,i) (,op (elt r ,i) (elt v ,i)))
-          )
+        (loop for i from 0 below l
+          do
+          (setf (elt r i) (,op (elt r i) (elt v i)))
         )
       )
     )
@@ -78,8 +75,8 @@
 (defmacro def-vec-type (type &rest ops)
   `(progn ,@(loop for (name op) in ops collect
     `(defop ,name (&rest vs)
-      (map-vector-3 ,type ,op vs)
-      (map-vector-3 ,type ,op vs)
+      (map-vector ,type ,op vs)
+      (map-vector ,type ,op vs)
     )
   ))
 )

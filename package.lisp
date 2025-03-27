@@ -98,6 +98,10 @@
     #:invec
     #:v+ #:v- #:v* #:v/ #:vmin #:vmax
     #:l+ #:l- #:l* #:l/ #:lmin #:lmax
+    #:def-vn
+    #:def-vn-type
+    #:mv2+ mv2- mv2* mv2/ mv2min mv2max
+    #:mv3+ mv3- mv3* mv3/ mv3min mv3max
     #:part
     #:mpart
     #:comp

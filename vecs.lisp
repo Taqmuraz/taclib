@@ -84,6 +84,25 @@
 (def-vec-type vector (v+ +) (v- -) (v* *) (v/ /) (vmin min) (vmax max))
 (def-vec-type list (l+ +) (l- -) (l* *) (l/ /) (lmin min) (lmax max))
 
+(defmacro def-vn (name n op)
+  `(defmacro ,(symbol-of name n op) (a b)
+    (once (a b)
+      `(vector ,@
+        (loop for i from 0 below ,n collect
+          `(,',op (aref ,a ,i) (aref ,b ,i))
+        )
+      )
+    )
+  )
+)
+
+(defmacro def-vn-type (name n &rest ops)
+  `(progn ,@(loop for op in ops collect `(def-vn ,name ,n ,op)))
+)
+
+(def-vn-type mv 2 + - * / min max)
+(def-vn-type mv 3 + - * / min max)
+
 (defgeneric dot (a b))
 
 (defgeneric len (v))

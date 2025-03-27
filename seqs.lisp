@@ -76,7 +76,9 @@
 (defun into-string (val)
   (typecase val
     (number (format nil "~A" val))
-    (t (coerce val 'string))
+    (symbol (string val))
+    (sequence (coerce val 'string))
+    (t (error (format nil "Error in the into-string, unsupported type : ~A" (type-of val))))
   )
 )
 

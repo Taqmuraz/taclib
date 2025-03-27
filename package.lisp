@@ -111,6 +111,7 @@
     #:sfun
     #:if-let
     #:with-items
+    #:with-vector-items
     #:cases-equal
     #:format-vars
     #:file-parent

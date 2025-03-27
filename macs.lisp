@@ -138,6 +138,14 @@
   )
 )
 
+(defmacro with-vector-items (vars v &body body)
+  (once (v)
+    `(let ,(mapcar #'list vars (last-> vars length list-range (mapcar (mpart list 'aref v))))
+      ,@body
+    )
+  )
+)
+
 (defmacro cases-equal (val &body forms)
   (once (val)
     `(cond ,@(loop for (test expr) on forms by #'cddr collect `((equal ,val ,test) ,expr)))

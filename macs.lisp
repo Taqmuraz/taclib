@@ -143,3 +143,11 @@
     `(cond ,@(loop for (test expr) on forms by #'cddr collect `((equal ,val ,test) ,expr)))
   )
 )
+
+(defmacro format-vars (stream &body vars)
+  `(format
+    ,stream
+    ,(concat 'string (loop for v in vars append (list (princ-to-string v) " ~A~%")))
+    ,@vars
+  )
+)

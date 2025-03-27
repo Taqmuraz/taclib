@@ -106,6 +106,7 @@
     #:if-let
     #:with-items
     #:cases-equal
+    #:format-vars
     #:file-parent
     #:concat-path
     #:symbol-of

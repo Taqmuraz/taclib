@@ -439,3 +439,11 @@
 (defun mat-pos-rot-inversed (pos rot)
   (mul-mat-4x4 (applyv 'mat-rotation-inversed rot) (applyv 'mat-translation (v- pos)))
 )
+
+(defun xyz->rotation (xyz)
+  (applyv #'mat-rotation xyz)
+)
+
+(defun xyz->translation (xyz)
+  (applyv #'mat-translation xyz)
+)

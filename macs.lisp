@@ -140,7 +140,7 @@
 
 (defmacro with-vector-items (vars v &body body)
   (once (v)
-    `(let ,(mapcar #'list vars (last-> vars length list-range (mapcar (mpart list 'aref v))))
+    `(let ,(mapcar #'list vars (last-> vars length list-range (mapcar (sfun e list 'aref v e))))
       ,@body
     )
   )

@@ -95,6 +95,7 @@
     #:mat-pos-rot-inversed
     #:xyz->rotation
     #:xyz->translation
+    #:xyz->x0z
     #:bvec
     #:uvec
     #:invec

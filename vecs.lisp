@@ -447,3 +447,7 @@
 (defun xyz->translation (xyz)
   (applyv #'mat-translation xyz)
 )
+
+(defun xyz->x0z (xyz)
+  (vector (aref xyz 0) 0 (aref xyz 2))
+)

@@ -66,6 +66,7 @@
     #:dot
     #:len
     #:norm
+    #:clamp-length
     #:repeat
     #:vv #:vvv #:vvvv vv* vvv* vvvv*
     #:ll #:lll #:llll ll* lll* llll*

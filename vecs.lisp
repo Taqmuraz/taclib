@@ -144,6 +144,17 @@
   )
 )
 
+(defun clamp-length (vec len)
+  (lets (
+      l (len vec)
+    )
+    (if (<= l len)
+      vec
+      (v* (norm vec) (vvv len))
+    )
+  )
+)
+
 (defun repeat (type times value)
   (cases type
     vector (make-array times :initial-element value)

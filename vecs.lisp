@@ -155,6 +155,28 @@
   )
 )
 
+(defmacro mclamp (n min max)
+  `(min ,max (max ,min ,n))
+)
+
+(defun closest (n &rest vals)
+  (if vals
+    (loop
+      with mind = (abs (- (car vals) n))
+      with r = (car vals)
+      for v in vals
+      for d = (abs (- n v))
+      do
+      (when (< d mind)
+        (setf mind d)
+        (setf r v)
+      )
+      finally (return r)
+    )
+    n
+  )
+)
+
 (defun repeat (type times value)
   (cases type
     vector (make-array times :initial-element value)

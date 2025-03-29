@@ -67,6 +67,8 @@
     #:len
     #:norm
     #:clamp-length
+    #:mclamp
+    #:closest
     #:repeat
     #:vv #:vvv #:vvvv vv* vvv* vvvv*
     #:ll #:lll #:llll ll* lll* llll*

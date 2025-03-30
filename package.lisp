@@ -66,6 +66,7 @@
     #:dot
     #:len
     #:norm
+    #:mdotv3
     #:mlenv3
     #:mnormv3
     #:clamp-length

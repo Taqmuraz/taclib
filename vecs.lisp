@@ -144,6 +144,12 @@
   )
 )
 
+(defmacro mdotv3 (a b)
+  (once (a b)
+    `(+ ,@(loop for i from 0 below 3 collect `(* (aref ,a ,i) (aref ,b ,i))))
+  )
+)
+
 (defmacro mlenv3 (v)
   `(with-vector-items (x y z) ,v (sqrt (+ (* x x) (* y y) (* z z))))
 )

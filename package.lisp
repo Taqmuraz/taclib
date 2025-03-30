@@ -118,6 +118,7 @@
     #:sfun
     #:if-let
     #:with-items
+    #:with-assoc-items
     #:with-vector-items
     #:cases-equal
     #:format-vars

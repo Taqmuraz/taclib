@@ -138,6 +138,12 @@
   )
 )
 
+(defmacro with-assoc-items (vars l &body body)
+  (lets (r (gensym))
+    `(let* ((,r ,l)(,(car vars) (cdr (car ,r))) ,@(loop for v in (cdr vars) append `((,r (cdr ,r))(,v (cdr (car ,r)))))) ,@body)
+  )
+)
+
 (defmacro with-vector-items (vars v &body body)
   (once (v)
     `(let ,(mapcar #'list vars (last-> vars length list-range (mapcar (sfun e list 'aref v e))))

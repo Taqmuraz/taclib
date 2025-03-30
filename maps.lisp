@@ -57,7 +57,9 @@
 )
 
 (defun make-assoc (&rest kvs)
-  (hash->assoc (apply #'make-hash kvs))
+  (loop for (k v) on kvs by #'cddr collect
+    (cons k v)
+  )
 )
 
 (defun merge-into (type &rest ms)

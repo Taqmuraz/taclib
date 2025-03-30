@@ -144,6 +144,25 @@
   )
 )
 
+(defmacro mlenv3 (v)
+  `(with-vector-items (x y z) ,v (sqrt (+ (* x x) (* y y) (* z z))))
+)
+
+(defmacro mnormv3 (v)
+  (once (v)
+    `(lets (l (mlenv3 ,v))
+      (if (zerop l)
+        (vvv 0)
+        (vector ,@
+          (loop for i from 0 below 3 collect
+            `(/ (aref ,v ,i) l)
+          )
+        )
+      )
+    )
+  )
+)
+
 (defun clamp-length (vec len)
   (lets (
       l (len vec)

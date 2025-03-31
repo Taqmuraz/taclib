@@ -165,3 +165,18 @@
     ,@vars
   )
 )
+
+(defmacro with-doubles (bindings &body body)
+  (lets (
+      bs (loop for b in bindings collect
+        (typecase b
+          (list b)
+          (symbol (list b b))
+        )
+      )
+    )
+    `(let ,(loop for (var f) in bs collect `(,var (coerce ,f 'double-float)))
+      ,@body
+    )
+  )
+)

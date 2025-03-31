@@ -122,7 +122,9 @@
     #:with-vector-items
     #:cases-equal
     #:format-vars
+    #:with-coerced
     #:with-doubles
+    #:with-floats
     #:file-parent
     #:concat-path
     #:symbol-of

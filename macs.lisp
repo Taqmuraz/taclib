@@ -166,7 +166,7 @@
   )
 )
 
-(defmacro with-doubles (bindings &body body)
+(defmacro with-coerced (bindings type &body body)
   (lets (
       bs (loop for b in bindings collect
         (typecase b
@@ -175,8 +175,16 @@
         )
       )
     )
-    `(let ,(loop for (var f) in bs collect `(,var (coerce ,f 'double-float)))
+    `(let ,(loop for (var f) in bs collect `(,var (coerce ,f ',type)))
       ,@body
     )
   )
+)
+
+(defmacro with-doubles (bindings &body body)
+  `(with-coerced ,bindings double-float ,@body)
+)
+
+(defmacro with-floats (bindings &body body)
+  `(with-coerced ,bindings single-float ,@body)
 )

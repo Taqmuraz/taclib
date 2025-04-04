@@ -102,6 +102,9 @@
     #:xyz->rotation
     #:xyz->translation
     #:xyz->x0z
+    #:clock->xy
+    #:xy->clock
+    #:look->rotation
     #:bvec
     #:uvec
     #:invec

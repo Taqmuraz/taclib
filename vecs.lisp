@@ -509,3 +509,29 @@
 (defun xyz->x0z (xyz)
   (vector (aref xyz 0) 0 (aref xyz 2))
 )
+
+(defun xy->clock (xy) "returns an angle for #(x y) if it would be a clock arrow"
+  (lets (
+      len (len xy)
+      yx (if (zerop len) (vector 1 0) (norm xy))
+      x (aref yx 1)
+      y (aref yx 0)
+    )
+    (* (acos x) (if (> y 0) 1 -1))
+  )
+)
+
+(defun clock->xy (clock) "rotates clockwise vector #(0 1) by an angle a"
+  (vector (sin a) (cos a))
+)
+
+(defun look->rotation (look)
+  (with-vector-items (x y z) look
+    (lets (
+        rx (asin (- y))
+        ry (xy->clock (vector x z))
+      )
+      (vector rx ry 0)
+    )
+  )
+)

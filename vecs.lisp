@@ -83,39 +83,13 @@
 (defmacro ml2*n (l n) (once (n) `(with-items (x y) ,l (list (* x ,n) (* y ,n)))))
 (defmacro ml3*n (l n) (once (n) `(with-items (x y z) ,l (list (* x ,n) (* y ,n) (* z ,n)))))
 
-(defgeneric dot (a b))
-
-(defgeneric len (v))
-
-(defgeneric norm (v))
-
-(defmethod dot ((a vector) (b vector))
-  (loop for ae across a for be across b sum (* ae be))
-)
-
-(defmethod dot ((a sequence) (b sequence))
-  (reduce #'+ (l* a b))
-)
-
-(defmethod dot ((a list) (b list))
+(defun dot (a b)
   (loop for ae in a for be in b sum (* ae be))
 )
 
-(defmethod len ((v sequence)) (sqrt (dot v v)))
+(defun len (v) (sqrt (dot v v)))
 
-(defmethod norm ((v vector))
-  (lets (c (length v) l (len v))
-    (if (zerop l)
-      (make-array c :initial-element 0)
-      (lets (r (make-array c))
-        (loop for i from 0 below c do (setf (aref r i) (/ (aref v i) l)))
-        r
-      )
-    )
-  )
-)
-
-(defmethod norm ((v list))
+(defun norm (v)
   (lets (l (len v))
     (if (zerop l)
       (loop for e in v collect 0)

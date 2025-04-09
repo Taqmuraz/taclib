@@ -66,14 +66,13 @@
     #:dot
     #:len
     #:norm
-    #:mdotv3
-    #:mlenv3
-    #:mnormv3
+    #:mdotl3
+    #:mlenl3
+    #:mnorml3
     #:clamp-length
     #:mclamp
     #:closest
     #:repeat
-    #:vv #:vvv #:vvvv vv* vvv* vvvv*
     #:ll #:lll #:llll ll* lll* llll*
     #:cross
     #:mat-identity
@@ -106,15 +105,13 @@
     #:clock->xy
     #:xy->clock
     #:look->rotation
-    #:bvec
-    #:uvec
-    #:invec
-    #:v+ #:v- #:v* #:v/ #:vmin #:vmax
+    #:blst
+    #:ulst
+    #:inlst
     #:l+ #:l- #:l* #:l/ #:lmin #:lmax
-    #:def-vn
-    #:def-vn-type
-    #:mv2+ mv2- mv2* mv2/ mv2min mv2max
-    #:mv3+ mv3- mv3* mv3/ mv3min mv3max
+    #:ml2+ ml2- ml2* ml2/ ml2min ml2max
+    #:ml3+ ml3- ml3* ml3/ ml3min ml3max
+    #:ml2*n ml3*n
     #:part
     #:mpart
     #:comp

@@ -21,48 +21,16 @@
   )
 )
 
-(defmacro bvec (type op a b)
-  (once (a b)
-    (cases type
-      vector `(vector ,@
-        (loop for i from 0 below 3 collect
-          `(,op (aref ,a ,i) (aref ,b ,i))
-        )
-      )
-      list (lets (ae (gensym) be (gensym))
-        `(loop for ,ae in ,a for ,be in ,b collect (,op ,ae ,be))
-      )
-      t (error (format nil "Wrong type for bvec macro : ~A" type))
-    )
-  )
+(defmacro blst (op a b)
+  `(loop for ae in ,a for be in ,b collect (,op ae be))
 )
 
-(defmacro uvec (type op v)
-  (once (v)
-    (cases type
-      vector `(vector ,@
-        (loop for i from 0 below 3 collect
-          `(,op (aref ,v ,i))
-        )
-      )
-      list (lets (e (gensym)) `(loop for ,e in ,v collect (,op ,e)))
-      t (error (format nil "Wrong type for uvec macro : ~A" type))
-    )
-  )
+(defmacro ulst (op v)
+  `(loop for e in ,v collect (,op e))
 )
 
-(defmacro invec (type op v)
-  (once (v)
-    (cases type
-      vector `(,op ,@
-        (loop for i from 0 below 3 collect
-          `(aref ,v ,i)
-        )
-      )
-      list `(with-items (x y z) ,v (,op x y z))
-      t (error (format nil "Wrong type for invec macro : ~A" type))
-    )
-  )
+(defmacro inlst (op v)
+  `(apply #',op ,v)
 )
 
 (defmacro defop (name params fbody mbody)
@@ -81,27 +49,38 @@
   ))
 )
 
-(def-vec-type vector (v+ +) (v- -) (v* *) (v/ /) (vmin min) (vmax max))
 (def-vec-type list (l+ +) (l- -) (l* *) (l/ /) (lmin min) (lmax max))
 
-(defmacro def-vn (name n op)
+(defmacro def-ln (name n op)
   `(defmacro ,(symbol-of name n op) (a b)
     (once (a b)
-      `(vector ,@
-        (loop for i from 0 below ,n collect
-          `(,',op (aref ,a ,i) (aref ,b ,i))
+      (lets (
+          as (mapcar (mpart symbol-of 'a-) (list-range ,n))
+          bs (mapcar (mpart symbol-of 'b-) (list-range ,n))
+        )
+        `(with-items ,as ,a
+          (with-items ,bs ,b
+            (list ,@
+              (loop for ae in as for be in bs collect
+                `(,',op ,ae ,be)
+              )
+            )
+          )
         )
       )
     )
   )
 )
 
-(defmacro def-vn-type (name n &rest ops)
-  `(progn ,@(loop for op in ops collect `(def-vn ,name ,n ,op)))
+(defmacro def-ln-type (name n &rest ops)
+  `(progn ,@(loop for op in ops collect `(def-ln ,name ,n ,op)))
 )
 
-(def-vn-type mv 2 + - * / min max)
-(def-vn-type mv 3 + - * / min max)
+(def-ln-type ml 2 + - * / min max)
+(def-ln-type ml 3 + - * / min max)
+
+(defmacro ml2*n (l n) (once (n) `(with-items (x y) ,l (list (* x ,n) (* y ,n)))))
+(defmacro ml3*n (l n) (once (n) `(with-items (x y z) ,l (list (* x ,n) (* y ,n) (* z ,n)))))
 
 (defgeneric dot (a b))
 
@@ -139,31 +118,25 @@
   (lets (l (len v))
     (if (zerop l)
       (loop for e in v collect 0)
-      (mapcar (sfun e / e l) v)
+      (loop for e in v collect (/ e l))
     )
   )
 )
 
-(defmacro mdotv3 (a b)
-  (once (a b)
-    `(+ ,@(loop for i from 0 below 3 collect `(* (aref ,a ,i) (aref ,b ,i))))
-  )
+(defmacro mdotl3 (a b)
+  `(loop for ae in ,a for be in ,b sum (* ae be))
 )
 
-(defmacro mlenv3 (v)
-  `(with-vector-items (x y z) ,v (sqrt (+ (* x x) (* y y) (* z z))))
+(defmacro mlenl3 (v)
+  `(with-items (x y z) ,v (sqrt (+ (* x x) (* y y) (* z z))))
 )
 
-(defmacro mnormv3 (v)
+(defmacro mnorml3 (v)
   (once (v)
-    `(lets (l (mlenv3 ,v))
+    `(lets (l (mlenl3 ,v))
       (if (zerop l)
-        (vvv 0)
-        (vector ,@
-          (loop for i from 0 below 3 collect
-            `(/ (aref ,v ,i) l)
-          )
-        )
+        (lll 0)
+        (with-items (x y z) ,v (list (/ x l) (/ y l) (/ z l)))
       )
     )
   )
@@ -175,7 +148,7 @@
     )
     (if (<= l len)
       vec
-      (v* (norm vec) (vvv len))
+      (l* (norm vec) (lll len))
     )
   )
 )
@@ -210,18 +183,6 @@
   )
 )
 
-(defun vv (x) (vector x x))
-
-(defun vvv (x) (vector x x x))
-
-(defun vvvv (x) (vector x x x x))
-
-(defun vv* (x &rest vals) (vv (apply #'* x vals)))
-
-(defun vvv* (x &rest vals) (vvv (apply #'* x vals)))
-
-(defun vvvv* (x &rest vals) (vvvv (apply #'* x vals)))
-
 (defun ll (x) (list x x))
 
 (defun lll (x) (list x x x))
@@ -235,15 +196,13 @@
 (defun llll* (x &rest vals) (llll (apply #'* x vals)))
 
 (defun cross (a b)
-  (macrolet (
-      (x (v) `(elt ,v 0))
-      (y (v) `(elt ,v 1))
-      (z (v) `(elt ,v 2))
-    )
-    (vector
-      (- (* (y a) (z b)) (* (z a) (y b)))
-      (- (* (z a) (x b)) (* (x a) (z b)))
-      (- (* (x a) (y b)) (* (y a) (x b)))
+  (with-items (ax ay az) a
+    (with-items (bx by bz) b
+      (list
+        (- (* ay bz) (* az by))
+        (- (* az bx) (* ax bz))
+        (- (* ax by) (* ay bx))
+      )
     )
   )
 )
@@ -353,15 +312,15 @@
 )
 
 (defun transform-point (m p)
-  (coerce (subseq
-    (car (mmul-mat m (list (list (aref p 0) (aref p 1) (aref p 2) 1)) 4 4 4 1))
-      0 3) 'vector)
+  (subseq
+    (car (mmul-mat m (list (with-items (x y z) p (list x y z 1))) 4 4 4 1))
+      0 3)
 )
 
 (defun transform-vector (m p)
-  (coerce (subseq
-    (car (mmul-mat m (list (list (aref p 0) (aref p 1) (aref p 2) 0)) 4 4 4 1))
-      0 3) 'vector)
+  (subseq
+    (car (mmul-mat m (list (with-items (x y z) p (list x y z 0))) 4 4 4 1))
+      0 3)
 )
 
 (defun vec-16->mat-4x4 (v)
@@ -487,33 +446,31 @@
 )
 
 (defun mat-pos-rot (pos rot)
-  (mul-mat-4x4 (applyv 'mat-translation pos) (applyv 'mat-rotation rot))
+  (mul-mat-4x4 (apply 'mat-translation pos) (apply 'mat-rotation rot))
 )
 
 (defun mat-pos-rot-inversed (pos rot)
-  (mul-mat-4x4 (applyv 'mat-rotation-inversed rot) (applyv 'mat-translation (v- pos)))
+  (mul-mat-4x4 (apply 'mat-rotation-inversed rot) (apply 'mat-translation (l- pos)))
 )
 
 (defun xyz->rotation (xyz)
-  (applyv #'mat-rotation xyz)
+  (apply #'mat-rotation xyz)
 )
 
 (defun xyz->translation (xyz)
-  (applyv #'mat-translation xyz)
+  (apply #'mat-translation xyz)
 )
 
 (defun xyz->x0z (xyz)
-  (vector (aref xyz 0) 0 (aref xyz 2))
+  (with-items (x y z) xyz (list x 0 z))
 )
 
 (defun xy->clock (xy) "returns an angle for #(x y) if it would be a clock arrow"
   (lets (
       len (len xy)
-      yx (if (zerop len) (vector 1 0) (norm xy))
-      x (aref yx 1)
-      y (aref yx 0)
+      yx (if (zerop len) (list 1 0) (norm xy))
     )
-    (* (acos x) (if (> y 0) 1 -1))
+    (with-items (y x) yx (* (acos x) (if (> y 0) 1 -1)))
   )
 )
 
@@ -522,12 +479,12 @@
 )
 
 (defun look->rotation (look)
-  (with-vector-items (x y z) look
+  (with-items (x y z) look
     (lets (
         rx (asin (- y))
-        ry (xy->clock (vector x z))
+        ry (xy->clock (list x z))
       )
-      (vector rx ry 0)
+      (list rx ry 0)
     )
   )
 )

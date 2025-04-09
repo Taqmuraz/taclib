@@ -87,6 +87,7 @@
     #:transform-vector
     #:mul-mats
     #:mmul-mat
+    #:mmul-mat-4x4
     #:vec-16->mat-4x4
     #:mat-4x4->vec-16
     #:mat-scale-4x4

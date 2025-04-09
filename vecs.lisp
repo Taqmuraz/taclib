@@ -250,25 +250,22 @@
 
 (defun mat-identity (n)
   (loop for i from 0 below n
-    with r = (make-array n)
-    and c = (make-array n :initial-element 0)
-    do (setf (aref r i) (with-vals c i 1))
-    finally (return r)
+    collect (loop for j from 0 below n collect (if (= i j) 1 0))
   )
 )
 
 (defun transponed (m)
-  (apply #'map 'vector #'vector (coerce m 'list))
+  (apply #'map 'list #'list m)
 )
 
-(defmacro mtransponed (m s)
-  (lets (v (gensym))
-    `(lets (,v ,m)
-      (vector ,@(loop for i from 0 below s collect
-        (cons 'vector (loop for j from 0 below s collect
-          `(aref (aref ,v ,j) ,i)
-        ))
-      ))
+(defmacro mtransponed (m n)
+  (once (m)
+    `(with-items ,(mapcar (mpart symbol-of 'col) (list-range n)) ,m
+      (loop ,@
+        (loop for i from 0 below n append `(for ,(symbol-of 'e i) in ,(symbol-of 'col i)))
+        collect
+        (list ,@(loop for i from 0 below n collect (symbol-of 'e i)))
+      )
     )
   )
 )
@@ -280,69 +277,67 @@
       (at (transponed a))
       (bl (length b))
       (atl (length at))
-      (r (apply #'vector (loop repeat bl collect (make-array atl))))
     )
-    (loop for i from 0 below atl
-      do (loop
-        for j from 0 below bl do
-        (setf (aref (aref r j) i) (vdot (aref at i) (aref b j)))
+    (loop for i from 0 below atl collect
+      (loop for j from 0 below bl collect
+        (ldot (elt at i) (elt b j))
       )
-      finally (return r)
     )
   )
 )
 
 (defmacro mmul-mat (a b am an bm bn)
   (labels (
-      (mvdot (a b l) (cons '+
-        (loop for i from 0 below l collect (list '* (funcall a i) (funcall b i)))
-      ))
-      (str (x) (format nil "~A" x))
-      (rel (i j) (mvdot
-        (lambda (x) (symbol-of 'a_ (str i) '_ (str x)))
-        (lambda (x) (symbol-of 'b_ (str x) '_ (str j))) am)
+      (mname (&rest els) (apply #'symbol-of (connect '- els)))
+      (unwrap (mat mat-m mat-n body)
+        (reduce
+          (sfun (j acc) progn
+            `(with-items ,(mapcar (sfun i mname mat i j) (list-range mat-m)) ,(mname mat j)
+              ,acc
+            )
+          )
+          (list-range mat-n)
+          :from-end t
+          :initial-value body
+        )
       )
-      (rcol (j) (cons 'vector (loop for i from 0 below am collect (rel i j))))
     )
-    `(let*
-      ,(append
-        (list `(a ,a) `(b ,b))
-        (loop for j from 0 below an append
-          (cons
-            (list (symbol-of 'a_ (str j)) `(aref a ,j))
-            (loop for i from 0 below am collect
-              (list (symbol-of 'a_ (str i) '_ (str j)) `(aref ,(symbol-of 'a_ (str j)) ,i))
+    (once (a b)
+      (lets (
+          a-cols (mapcar (mpart mname 'a) (list-range an))
+          b-cols (mapcar (mpart mname 'b) (list-range bn))
+        )
+        `(with-items ,a-cols ,a
+          (with-items ,b-cols ,b
+            ,(unwrap 'a am an
+              (unwrap 'b bm bn
+                `(list ,@
+                  (loop for bj from 0 below bn collect
+                    `(list ,@
+                      (loop for ai from 0 below am collect
+                        `(+ ,@
+                          (loop
+                            for aj from 0 below an
+                            for bi from 0 below bm
+                            collect
+                            `(* ,(mname 'a ai aj) ,(mname 'b bi bj))
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
             )
           )
         )
-        (loop for j from 0 below bn append
-          (cons
-            (list (symbol-of 'b_ (str j)) `(aref b ,j))
-            (loop for i from 0 below bm collect
-              (list (symbol-of 'b_ (str i) '_ (str j)) `(aref ,(symbol-of 'b_ (str j)) ,i))
-            )
-          )
-        )
-      )
-      ,@(append
-        (loop for i from 0 below am append
-          (loop for j from 0 below an collect
-            `(declare (type number ,(symbol-of 'a_ (str i) '_ (str j))))
-          )
-        )
-        (loop for i from 0 below bm append
-          (loop for j from 0 below bn collect
-            `(declare (type number ,(symbol-of 'b_ (str i) '_ (str j))))
-          )
-        )
-        (list (cons 'vector
-          (loop for j from 0 below bn collect
-            (rcol j)
-          )
-        ))
       )
     )
   )
+)
+
+(defmacro mmul-mat-4x4 (a b)
+  `(mmul-mat ,a ,b 4 4 4 4)
 )
 
 (defun mul-mats (&rest ms)
@@ -358,53 +353,54 @@
 )
 
 (defun transform-point (m p)
-  (subseq
-    (aref (mmul-mat m (vector (vector (aref p 0) (aref p 1) (aref p 2) 1)) 4 4 4 1) 0)
-      0 3)
+  (coerce (subseq
+    (car (mmul-mat m (list (list (aref p 0) (aref p 1) (aref p 2) 1)) 4 4 4 1))
+      0 3) 'vector)
 )
 
 (defun transform-vector (m p)
-  (subseq
-    (aref (mmul-mat m (vector (vector (aref p 0) (aref p 1) (aref p 2) 0)) 4 4 4 1) 0)
-      0 3)
+  (coerce (subseq
+    (car (mmul-mat m (list (list (aref p 0) (aref p 1) (aref p 2) 0)) 4 4 4 1))
+      0 3) 'vector)
 )
 
 (defun vec-16->mat-4x4 (v)
-  (vector
-    (subseq v 0 4)
-    (subseq v 4 8)
-    (subseq v 8 12)
-    (subseq v 12 16)
+  (labels (
+      (sub (s e) (coerce (subseq v s e) 'list))
+    )
+    (list
+      (sub 0 4)
+      (sub 4 8)
+      (sub 8 12)
+      (sub 12 16)
+    )
   )
 )
 
 (defun mat-4x4->vec-16 (m)
-  (concatenate 'vector
-    (aref m 0)
-    (aref m 1)
-    (aref m 2)
-    (aref m 3)
+  (with-items (a b c d) m
+    (concatenate 'vector a b c d)
   )
 )
 
 (defun mat-copy (m)
-  (map 'vector (sfun r copy-seq r) m)
+  (map 'list (sfun r copy-seq r) m)
 )
 
 (defun mat-scale-4x4 (x y z)
-  (vector
-    (vector x 0 0 0)
-    (vector 0 y 0 0)
-    (vector 0 0 z 0)
-    (vector 0 0 0 1)
+  (list
+    (list x 0 0 0)
+    (list 0 y 0 0)
+    (list 0 0 z 0)
+    (list 0 0 0 1)
   )
 )
 
 (defmacro classic-matrix (&rest rows)
   (last-> rows
     (apply #'mapcar #'list)
-    (mapcar (mpart cons 'vector))
-    (cons 'vector)
+    (mapcar (mpart cons 'list))
+    (cons 'list)
   )
 )
 

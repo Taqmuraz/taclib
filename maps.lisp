@@ -42,10 +42,16 @@
 )
 
 (defmethod with-vals ((c list) &rest kvs)
-  (let ((r (hash)))
-    (loop for (k . v) in c do (setf (gethash k r) v))
-    (loop for (k v) on kvs by #'cddr do (setf (gethash k r) v))
-    (hash->assoc r)
+  (lets (
+      h (apply #'make-hash kvs)
+      r
+      (loop for (k . v) in c collect
+        (multiple-value-bind (val present) (gethash k h)
+          (cons k (if present (progn (remhash k h) val) v))
+        )
+      )
+    )
+    (append r (hash->assoc h))
   )
 )
 
@@ -189,7 +195,15 @@
 )
 
 (defmethod update ((map list) func &rest keys)
-  (hash->assoc (apply #'update (assoc->hash map) func keys))
+  (lets (
+      ks (apply #'hash-set keys)
+    )
+    (loop for (k . v) in map collect
+      (multiple-value-bind (val present) (gethash k ks)
+        (cons k (if present (funcall func v) v))
+      )
+    )
+  )
 )
 
 (defgeneric update-or-put (map func &rest keys))

@@ -1,23 +1,24 @@
 (in-package #:taclib)
 
-(defmacro map-vector (type op vs)
-  `(lets (
-      r (copy-seq (coerce (car ,vs) ',type))
-      l (length r)
-    )
-    (if (-> ,vs cdr null)
-      (loop for i from 0 below l collect
-        (setf (elt r i) (,op (elt r i)))
-      )
-      (loop for v in (cdr ,vs)
-        do
-        (loop for i from 0 below l
-          do
-          (setf (elt r i) (,op (elt r i) (elt v i)))
+(defmacro mapvec (op vs)
+  (once (vs)
+    `(if (cdr ,vs)
+      (lets (
+          r (copy-seq (car ,vs))
         )
+        (loop for v in (cdr ,vs) do
+          (setf r
+            (loop
+              for a in r
+              for b in v
+              collect (,op a b)
+            )
+          )
+        )
+        r
       )
+      (loop for e in (car ,vs) collect (,op e))
     )
-    r
   )
 )
 
@@ -40,16 +41,16 @@
   )
 )
 
-(defmacro def-vec-type (type &rest ops)
+(defmacro def-lst-ops (&rest ops)
   `(progn ,@(loop for (name op) in ops collect
     `(defop ,name (&rest vs)
-      (map-vector ,type ,op vs)
-      (map-vector ,type ,op vs)
+      (mapvec ,op vs)
+      (mapvec ,op vs)
     )
   ))
 )
 
-(def-vec-type list (l+ +) (l- -) (l* *) (l/ /) (lmin min) (lmax max))
+(def-lst-ops (l+ +) (l- -) (l* *) (l/ /) (lmin min) (lmax max))
 
 (defmacro def-ln (name n op)
   `(defmacro ,(symbol-of name n op) (a b)

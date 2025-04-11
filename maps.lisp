@@ -201,14 +201,8 @@
 )
 
 (defmethod update ((map list) func &rest keys)
-  (lets (
-      ks (apply #'hash-set keys)
-    )
-    (loop for (k . v) in map collect
-      (multiple-value-bind (val present) (gethash k ks)
-        (cons k (if present (funcall func v) v))
-      )
-    )
+  (loop for (k . v) in map collect
+    (cons k (if (loop for e in keys do (if (equal k e) (return t))) (funcall func v) v))
   )
 )
 

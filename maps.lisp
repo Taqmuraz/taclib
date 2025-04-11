@@ -247,22 +247,38 @@
   (lambda (map) (let ((a (assoc key map :test #'equal))) (if a (cdr a) nil)))
 )
 
-(defgeneric map-key (map key &optional not-found))
-
-(defmethod map-key ((map hash-table) key &optional not-found)
+(defun map-key-hash (map key &optional not-found)
   (multiple-value-bind (v h) (gethash key map) (if h v not-found))
 )
 
-(defmethod map-key ((map vector) key &optional not-found)
+(defun map-key-vector (map key &optional not-found)
   (let ((l (length map))) (if (and (>= l 0) (< key l)) (aref map key) not-found))
 )
 
-(defmethod map-key ((map list) key &optional not-found)
-  (let ((a (assoc key map :test #'equal))) (if a (cdr a) not-found))
+(defmacro map-key-list (map key &optional not-found)
+  (once (key)
+    `(loop
+      for (k . v) in ,map
+      do (when (equal k ,key) (return v))
+      finally (return ,not-found)
+    )
+  )
 )
 
-(defmethod map-key ((map function) key &optional not-found)
+(defun map-key-func (map key &optional not-found)
   (lets (r (funcall map key)) (if r r not-found))
+)
+
+(defmacro map-key (map key &optional not-found)
+  (once (map)
+    `(typecase ,map
+      (list (map-key-list ,map ,key ,not-found))
+      (vector (map-key-vector ,map ,key ,not-found))
+      (hash-table (map-key-hash ,map ,key ,not-found))
+      (function (map-key-func ,map ,key ,not-found))
+      (t (error (format nil "Wrong map for map-key : ~A" ,map)))
+    )
+  )
 )
 
 (defmethod print-object ((h hash-table) stream)
@@ -276,7 +292,7 @@
 )
 
 (defmethod select-keys ((map vector) &rest keys)
-  (map 'vector (mpart map-key map) keys)
+  (map 'vector (sfun k map-key map k) keys)
 )
 
 (defmethod select-keys ((map hash-table) &rest keys)

@@ -42,16 +42,22 @@
 )
 
 (defmethod with-vals ((c list) &rest kvs)
-  (lets (
-      h (apply #'make-hash kvs)
-      r
-      (loop for (k . v) in c collect
-        (multiple-value-bind (val present) (gethash k h)
-          (cons k (if present (progn (remhash k h) val) v))
+  (loop
+    with r = (loop for (k . v) in c collect (cons k v))
+    with acc = nil
+    for (k v) on kvs by #'cddr
+    for met = nil
+    do (progn
+      (loop for p in r do
+        (when (equal k (car p))
+          (setf (cdr p) v)
+          (setf met t)
+          (return nil)
         )
       )
+      (when (null met) (push (cons k v) acc))
     )
-    (append r (hash->assoc h))
+    finally (return (append r acc))
   )
 )
 

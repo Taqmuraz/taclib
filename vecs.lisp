@@ -34,6 +34,26 @@
   `(apply #',op ,v)
 )
 
+(defmacro blst3 (op a b)
+  `(with-items (ax ay az) ,a
+    (with-items (bx by bz) ,b
+      (list
+        (,op ax bx)
+        (,op ay by)
+        (,op az bz)
+      )
+    )
+  )
+)
+
+(defmacro ulst3 (op v)
+  `(with-items (x y z) ,v (list (,op x) (,op y) (,op z)))
+)
+
+(defmacro inlst3 (op v)
+  `(with-items (x y z) ,v (,op x y z))
+)
+
 (defmacro defop (name params fbody mbody)
   (list 'progn
     `(defun ,name ,params ,fbody)

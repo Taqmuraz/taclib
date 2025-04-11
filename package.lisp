@@ -108,6 +108,9 @@
     #:blst
     #:ulst
     #:inlst
+    #:blst3
+    #:ulst3
+    #:inlst3
     #:l+ #:l- #:l* #:l/ #:lmin #:lmax
     #:ml2+ ml2- ml2* ml2/ ml2min ml2max
     #:ml3+ ml3- ml3* ml3/ ml3min ml3max

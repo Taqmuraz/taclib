@@ -101,3 +101,7 @@
 (defun all-possible-pairs (list)
   (mapcon (sfun l mapcar (sfun e list (car l) e) (cdr l)) list)
 )
+
+(defun partitions (lst size)
+  (loop for c on lst by (sfun l nthcdr size l) collect (take c size))
+)

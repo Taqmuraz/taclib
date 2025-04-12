@@ -48,6 +48,7 @@
     #:at-least-one
     #:push-when
     #:all-possible-pairs
+    #:partitions
     #:list-from-to
     #:vector-from-to
     #:list-range

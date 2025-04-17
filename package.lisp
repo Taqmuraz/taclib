@@ -132,6 +132,7 @@
     #:with-floats
     #:file-parent
     #:concat-path
+    #:read-file
     #:symbol-of
     #:keyword-of
     #:search-tree
